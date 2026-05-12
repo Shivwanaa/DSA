@@ -6,9 +6,6 @@ public:
         if(nums.size()==1){
             return nums[0];
         }
-        if(r==0){
-            return nums[r];
-        }
         if(nums[l]!=nums[l+1]){
             return nums[l];
         }
