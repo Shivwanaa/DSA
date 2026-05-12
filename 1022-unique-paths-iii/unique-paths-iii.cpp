@@ -1,36 +1,27 @@
 class Solution {
 public:
-    int check(vector<vector<int>>& grid,int an,int i,int j,int re,int ce){
-        if(i<0 || j<0 || i>=grid.size() || j>=grid[0].size() || grid[i][j]==-1||grid[i][j]==-2||grid[i][j]==-3){
+    int check(vector<vector<int>>& grid,int an,int i,int j){
+        if(i<0 || j<0 || i>=grid.size() || j>=grid[0].size() || grid[i][j]==-1 ){
             return 0;
         }
-        if(i==re && j==ce){
+        if(grid[i][j]==2){
             return an==0;
         }
-        if(grid[i][j]==1){
-            grid[i][j]=-3;
-        }
-        if(grid[i][j]==0){
-        grid[i][j]=-2;
-        an--;
-        }
-        int a=check(grid,an,i+1,j,re,ce);
-        int b=check(grid,an,i-1,j,re,ce);
-        int c=check(grid,an,i,j+1,re,ce);
-        int d=check(grid,an,i,j-1,re,ce);
-
-        if(grid[i][j]==-2)
-        grid[i][j]=0;
-        if(grid[i][j]==-3){
-            grid[i][j]=1;
-        }
+        int temp=grid[i][j];
+        grid[i][j]=-1;
+        int a=check(grid,an-1,i+1,j);
+        int b=check(grid,an-1,i-1,j);
+        int c=check(grid,an-1,i,j+1);
+        int d=check(grid,an-1,i,j-1);
+        grid[i][j]=temp;
         return a+b+c+d;
     }
     int uniquePathsIII(vector<vector<int>>& grid) {
         //so entire grid has to be 1/-1-
         //map with 0 and 1
         // unordered_map<int,int>>m;
-        int r,c,re,ce,an=0;
+        int an=0;
+        int r=0,c=0;
         for(int i=0;i<grid.size();i++){
             for(int j=0;j<grid[i].size();j++){
                 if(grid[i][j]==0){
@@ -41,12 +32,9 @@ public:
                     r=i;
                     c=j;
                 }
-                if(grid[i][j]==2){
-                    re=i;
-                    ce=j;
-                }
+                
             }
         } 
-        return check(grid,an,r,c,re,ce);
+        return check(grid,an+1,r,c);
     }
 };
