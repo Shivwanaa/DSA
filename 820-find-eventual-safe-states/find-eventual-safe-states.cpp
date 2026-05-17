@@ -1,36 +1,38 @@
 class Solution {
 public:
+    bool check(vector<vector<int>>& graph,int node,unordered_set<int>&visting,unordered_set<int>&visted){
+        if(visting.count(node)){
+            return true;
+        }
+        if(visted.count(node)){
+            return false;
+        }
+        visting.insert(node);
+        for(auto i:graph[node]){
+            if(check(graph,i,visting,visted)){
+                return true;
+            }
+        }
+        visting.erase(node);
+        visted.insert(node);
+        return false;
+    }
     vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        //now do dfs
+        //visting set for curr recursion visted for completed that node
+        unordered_set<int>visted;
+        unordered_set<int>visting;
         vector<int>ans;
-        queue<int>q;
+        //set-for terminal node
+        unordered_set<int>terminal;
         for(int i=0;i<graph.size();i++){
-            if(graph[i].empty()){
-                q.push(i);
+            if(!check(graph,i,visting,visted)){
+                ans.push_back(i);
             }
         }
-        unordered_map<int,vector<int>>m;
-        unordered_map<int,int>in;
-        for(int i=0;i<graph.size();i++){
-            m[i]={};
-            in[i]=0;
-        }
-        for(int i=0;i<graph.size();i++){
-            for(int j=0;j<graph[i].size();j++){
-                m[graph[i][j]].push_back(i);
-                in[i]++;
-            }
-        }
-        while(q.size()){
-            int f=q.front();
-            q.pop();
-            ans.push_back(f);
-            for(auto i:m[f]){
-                in[i]--;
-                if(in[i]==0){
-                    q.push(i);
-                }
-            }
-        }
+        // for(auto i:visted){
+        //     ans.push_back(i);
+        // }
         sort(ans.begin(),ans.end());
         return ans;
     }
