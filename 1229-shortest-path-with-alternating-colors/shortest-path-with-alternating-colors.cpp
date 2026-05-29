@@ -17,15 +17,12 @@ public:
             blue[i[0]].push_back(i[1]);
             // b.insert({i[0],i[1]});
         }
-        auto comp=[](pair<int,pair<int,int>>a,pair<int,pair<int,int>>b){
-            return a.second.first>b.second.first;
-        };
+        queue<pair<int,pair<int,int>>>q;
         set<pair<int,int>>v;
-        priority_queue<pair<int,pair<int,int>>,vector<pair<int,pair<int,int>>>,decltype(comp)>q(comp);
         q.push({0,{0,0}});
         vector<int>dist(n,1e9);
         while(q.size()){
-            pair<int,pair<int,int>>p=q.top();
+            pair<int,pair<int,int>>p=q.front();
             q.pop();
             if(v.count({p.first,p.second.second})){
                 continue;
