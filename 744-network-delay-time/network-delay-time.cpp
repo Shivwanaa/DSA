@@ -1,9 +1,6 @@
 class Solution {
 public:
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
-        // if(n==k){
-        //     return -1;
-        // }
         map<pair<int,int>,int>main;
         unordered_map<int,vector<int>>m;
         for(auto i:times){
@@ -26,11 +23,10 @@ public:
             ans=max(ans,c);
             v.insert(f);
             for(auto i:m[f]){
-                if(!v.count(i))
+                // if(!v.count(i))
                 pq.push({i,c+main[{f,i}]});
             }
         }
-       
         if(v.size()==n){
             return ans;
         }
