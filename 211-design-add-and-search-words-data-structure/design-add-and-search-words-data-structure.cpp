@@ -33,7 +33,7 @@ TrieNode*root;
                 }
                     return false;
             }
-            else
+            // else
             node=node->children[word[i]];
         }
         return node->endWord;
