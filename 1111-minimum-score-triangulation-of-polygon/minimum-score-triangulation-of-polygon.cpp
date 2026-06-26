@@ -13,12 +13,10 @@ vector<vector<int>>dp;
         }
         int ans=1e9;
         for(int k=i+1;k<j;k++){
-            int l=check(values,i,k);
-            int r=check(values,k,j);
-            ans=min(ans,l+r+values[i]*values[j]*values[k]);
+            int tot=values[i]*values[k]*values[j]+check(values,i,k)+check(values,k,j);
+            ans=min(ans,tot);
         }
-        dp[i][j]=ans;
-        return dp[i][j];
+        return dp[i][j]=ans;
     }
     int minScoreTriangulation(vector<int>& values) {
         dp=vector<vector<int>>(values.size(),vector<int>(values.size(),-1));
