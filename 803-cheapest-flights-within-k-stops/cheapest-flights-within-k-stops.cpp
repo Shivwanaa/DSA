@@ -1,39 +1,37 @@
 class Solution {
 public:
     int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
-        unordered_map<int,vector<int>>m;
-        map<pair<int,int>,int>cost;
+        unordered_map<int,vector<pair<int,int>>>m;
         for(auto i:flights){
-            m[i[0]].push_back(i[1]);
-            cost[{i[0],i[1]}]=i[2];
+            m[i[0]].push_back({i[1],i[2]});
         }
-        queue<pair<int,int>>pq;
-        pq.push({src,0});
-        int ans=1e9;
-        vector<int>dist(n,1e9);
+        queue<pair<int,int>>q;
+        q.push({src,0});
         unordered_set<int>v;
-        while(pq.size() && k>=0){
-            int s=pq.size();
+        int ans=1e9;
+        k=k+2;
+        vector<int>dist(n,1e9);
+        while(q.size() && k){
+            int s=q.size();
             for(int i=0;i<s;i++){
-                auto [f,c]=pq.front();
-                pq.pop();
-                cout<<f<<" ";
-                if(f==dst){
-                    ans=min(ans,c);
-                }
-                for(auto i:m[f]){
-                    if(c+cost[{f,i}]>=dist[i]){
+                auto[node,cost]=q.front();
+                q.pop();
+                if(node==dst){
+                ans=min(ans,cost);
+            }
+                for(auto i:m[node]){
+                    if(dist[i.first]<cost+i.second){
                         continue;
                     }
-                    dist[i]=c+cost[{f,i}];
-                    pq.push({i,dist[i]});
+                    dist[i.first]=cost+i.second;
+                    q.push({i.first,i.second+cost});
                 }
             }
             k--;
         }
-        if(dist[dst]==1e9){
+        if(ans==1e9){
             return -1;
         }
-        return dist[dst];
+        return ans;
     }
 };
