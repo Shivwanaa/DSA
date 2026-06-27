@@ -1,27 +1,27 @@
 class Solution {
 public:
     bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        unordered_map<int,int>in;
         unordered_map<int,vector<int>>m;
+        unordered_map<int,int>in;
         for(int i=0;i<numCourses;i++){
-            in[i]=0;
             m[i]={};
+            in[i]=0;
         }
         for(auto i:prerequisites){
-            in[i[0]]++;
-            m[i[1]].push_back(i[0]);
+            m[i[0]].push_back(i[1]);
+            in[i[1]]++;
         }
         queue<int>q;
-        for(int i=0;i<numCourses;i++){
-            if(in[i]==0){
-                q.push(i);
+        for(auto i:in){
+            if(i.second==0){
+                q.push(i.first);
             }
         }
-        int a=0;
+        int c=0;
         while(q.size()){
             int f=q.front();
             q.pop();
-            a++;
+            c++;
             for(auto i:m[f]){
                 in[i]--;
                 if(in[i]==0){
@@ -29,7 +29,7 @@ public:
                 }
             }
         }
-        if(a==numCourses){
+        if(c==numCourses){
             return true;
         }
         return false;
