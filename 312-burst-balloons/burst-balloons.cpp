@@ -10,7 +10,7 @@ vector<vector<int>>dp;
         }
         int best=-1e9;
         for(int k=i;k<=j;k++){
-            int tot=nums[i-1]*nums[k]*nums[j+1]+check(nums,i,k-1)+check(nums,k+1,j);
+            int tot=nums[i-1]*nums[j+1]*nums[k]+check(nums,i,k-1)+check(nums,k+1,j);
             best=max(best,tot);
         }
         return dp[i][j]=best;
@@ -18,7 +18,7 @@ vector<vector<int>>dp;
     int maxCoins(vector<int>& nums) {
         nums.insert(nums.begin(),1);
         nums.push_back(1);
-        dp=vector<vector<int>>(nums.size()+2,vector<int>(nums.size()+2,-1));
+        dp=vector<vector<int>>(nums.size(),vector<int>(nums.size(),-1));
         return check(nums,1,nums.size()-2);
     }
 };
