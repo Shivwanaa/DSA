@@ -1,40 +1,37 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
-        int ans=0;
         queue<pair<int,int>>q;
-        int rot=0;
+        int count=0;
         for(int i=0;i<grid.size();i++){
-            for(int j=0;j<grid[0].size();j++){
+            for(int j=0;j<grid[i].size();j++){
                 if(grid[i][j]==2){
-                    q.push({i,j});
-                }
-                if(grid[i][j]==1){
-                    rot++;
-                }
+                q.push({i,j});
+            }
+            if(grid[i][j]==1){
+                count++;
+            }
             }
         }
-        int s=q.size();
+        // vector<vector<int>>dir(4,vector<int>(2));
         int dir[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
-        while(rot>0 && q.size()){
-            int qs=q.size();
-            for(int l=0;l<qs;l++){
-                auto [i,j]=q.front();
+        int ans=0;
+        while(q.size() && count){
+            int s=q.size();
+            for(int i=0;i<s;i++){
+                auto [r,c]=q.front();
                 q.pop();
-                for(int k=0;k<4;k++){
-                    if(i+dir[k][0]<0 ||i+dir[k][0]>=grid.size()||j+dir[k][1]<0||j+dir[k][1]>=grid[0].size()){
-                        continue;
-                    }
-                    if(grid[i+dir[k][0]][j+dir[k][1]]==1){
-                        rot--;
-                        grid[i+dir[k][0]][j+dir[k][1]]=2;
-                        q.push({i+dir[k][0],j+dir[k][1]});
+                for(auto i:dir){
+                    if(r+i[0]<grid.size() && c+i[1]<grid[0].size() && grid[r+i[0]][c+i[1]]==1){
+                        grid[r+i[0]][c+i[1]]=2;
+                        q.push({r+i[0],c+i[1]});
+                        count--;                        
                     }
                 }
             }
             ans++;
         }
-        if(rot!=0){
+        if(count!=0){
             return -1;
         }
         return ans;
