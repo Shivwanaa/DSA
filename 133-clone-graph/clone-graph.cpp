@@ -21,7 +21,7 @@ public:
 
 class Solution {
 public:
-    Node* check(Node*node,unordered_map<Node*,Node*>&m){
+    Node* check(unordered_map<Node*,Node*>&m,Node* node){
         if(!node){
             return nullptr;
         }
@@ -31,14 +31,15 @@ public:
         Node*t=new Node(node->val);
         m[node]=t;
         for(auto i:node->neighbors){
-            // Node*t=new Node(node->val);
-            // m[node]=t;
-            m[node]->neighbors.push_back(check(i,m));
+            m[node]->neighbors.push_back(check(m,i));
         }
         return m[node];
     }
     Node* cloneGraph(Node* node) {
         unordered_map<Node*,Node*>m;
-        return check(node,m);
+        
+        
+        check(m,node);
+        return m[node];
     }
 };
