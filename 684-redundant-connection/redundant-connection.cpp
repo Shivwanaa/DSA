@@ -1,28 +1,43 @@
-class Solution {
-public:
-    bool check(unordered_map<int,vector<int>>&m,int node,int p,unordered_set<int>&v){
-        if(v.count(node)){
+class DSU{
+    vector<int>p;
+    vector<int>s;
+    public:
+    DSU(int n){
+        p.resize(n+1);
+        s.resize(n+1);
+        for(int i=0;i<=n;i++){
+            p[i]=i;
+            s[i]=1;
+        }
+    }
+    int find(int node){
+        if(p[node]!=node){
+            return find(p[node]);
+        }
+        return node;
+    }
+    bool Union(int u,int v){
+        int pu=find(u);
+        int pv=find(v);
+        if(pu!=pv){
+            p[pu]=pv;
+            s[pv]=s[pv]+s[pu];
             return true;
         }
-        v.insert(node);
-        for(auto i:m[node]){
-               if(i!=p && check(m,i,node,v)){
-                return true;
-               }
-            
-        }
-        return false;;
+        return false;
     }
+
+};
+class Solution {
+public:
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
         vector<int>ans;
-        unordered_map<int,vector<int>>m;
+        DSU dsu(edges.size());
         for(auto i:edges){
-            m[i[0]].push_back(i[1]);
-            m[i[1]].push_back(i[0]);
-            unordered_set<int>v;
-            if(check(m,i[0],-1,v)){
-                return {i[0],i[1]};
+            if(dsu.find(i[0])==dsu.find(i[1])){
+                return i;
             }
+            dsu.Union(i[0],i[1]);
         }
         return ans;
     }
