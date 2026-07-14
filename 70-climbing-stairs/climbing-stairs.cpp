@@ -1,22 +1,22 @@
 class Solution {
 public:
-vector<int>m;
-    int climb_Stairs(int n){
-        if(n<0){
-            return 0;
-        }
+vector<int>dp;
+    int check(int n){
         if(n==0){
             return 1;
         }
-        if(m[n]!=0){
-            return m[n];
+        if(n<0){
+            return 0;
         }
-        int a=climb_Stairs(n-1);
-        int b=climb_Stairs(n-2);
-        return m[n]=a+b;
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+        int one=check(n-1);
+        int two=check(n-2);
+        return dp[n]= one+two;
     }
     int climbStairs(int n) {
-        m=vector<int>(n+1,0);
-        return climb_Stairs(n);
+        dp=vector<int>(n+1,-1);
+        return check(n);
     }
 };
