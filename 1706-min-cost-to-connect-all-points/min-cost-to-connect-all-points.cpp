@@ -3,9 +3,9 @@ class DSU{
     vector<int>p;
     vector<int>s;
     DSU(int n){
-        p.resize(n+1);
-        s.resize(n+1);
-        for(int i=0;i<=n;i++){
+        p.resize(n);
+        s.resize(n);
+        for(int i=0;i<n;i++){
             p[i]=i;
             s[i]=1;
         }
@@ -19,32 +19,32 @@ class DSU{
     bool Union(int x,int y){
         int px=find(x);
         int py=find(y);
-        if(px!=py){
-            p[px]=py;
-            s[py]=s[py]+s[px];
-            return true;
+        if(px==py){
+            return false;
         }
-        return false;
+        p[px]=py;
+        s[py]=s[py]+s[px];
+        return true;
     }
 };
 class Solution {
 public:
     int minCostConnectPoints(vector<vector<int>>& points) {
-        //the emax distance shld be minimized
-        vector<tuple<int,int,int>>dist;
+        vector<tuple<int,int,int>>v;
         for(int i=0;i<points.size();i++){
             for(int j=i+1;j<points.size();j++){
-                int d = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
-
-                dist.push_back({d,i,j});
+                int d=abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1]);
+                v.push_back({d,i,j});
             }
         }
-        sort(dist.begin(),dist.end());
+        sort(v.begin(),v.end());
         int ans=0;
         DSU dsu(points.size());
-        for(const auto[a,b,c]:dist){
-            if(dsu.Union(b,c)){
-                ans=ans+a;
+        for(auto i:v){
+            auto [a,b,c]=i;
+            if(dsu.find(b)!=dsu.find(c)){
+            dsu.Union(b,c);
+            ans=ans+a;
             }
         }
         return ans;
