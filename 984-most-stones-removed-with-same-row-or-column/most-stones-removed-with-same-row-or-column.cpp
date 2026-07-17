@@ -1,23 +1,22 @@
 class DSU{
+    public:
     vector<int>p;
     vector<int>s;
-    
-public:
-int c;
+    int c=0;
     DSU(int n){
-        c=n;
         p.resize(n);
         s.resize(n);
         for(int i=0;i<n;i++){
-            p[i]=i;
             s[i]=1;
+            p[i]=i;
         }
+        c=n;
     }
-    int find(int x){
-        if(x!=p[x]){
-            return find(p[x]);
+    int find(int node){
+        if(p[node]!=node){
+            return find(p[node]);
         }
-        return p[x];
+        return p[node];
     }
     bool Union(int x,int y){
         int px=find(x);
@@ -25,20 +24,19 @@ int c;
         if(px==py){
             return false;
         }
-        c--;
         p[px]=py;
-        s[py]=s[py]+s[px];
+        s[py]=s[px]+s[py];
+        c--;
         return true;
     }
 };
 class Solution {
 public:
     int removeStones(vector<vector<int>>& stones) {
-        int n=stones.size();
-        DSU dsu(n);
+        DSU dsu(stones.size());
         for(int i=0;i<stones.size();i++){
             for(int j=i+1;j<stones.size();j++){
-                if(stones[i][0]==stones[j][0] ||stones[i][1]==stones[j][1]){
+                if(stones[i][0]==stones[j][0] || stones[i][1]==stones[j][1]){
                     dsu.Union(i,j);
                 }
             }
