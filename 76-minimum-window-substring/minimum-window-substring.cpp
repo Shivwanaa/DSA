@@ -1,39 +1,40 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        unordered_map<char,int>m;
-        for(int i=0;i<t.size();i++){
-            m[t[i]]++;
+        unordered_map<char,int>m1;
+        unordered_map<char,int>m2;
+        for(auto i:t){
+            m2[i]++;
         }
-        unordered_map<char,int>main;
+        int formed=m2.size();
+        int needed=0;
         int i=0;
-        int ml=1e9;
-        int idx=-1;
-        int formed=0;
+        int l=1e9;
+        int mi=-1;
         for(int j=0;j<s.size();j++){
-            if(m.find(s[j])!=m.end()){
-                main[s[j]]++;
-                if(main[s[j]]==m[s[j]]){
-                    formed++;
+            if(m2.find(s[j])!=m2.end()){
+                m1[s[j]]++;
+                if(m1[s[j]]==m2[s[j]]){
+                    needed++;
                 }
             }
-            while(formed==m.size() && i<s.size() && i<=j){
-                if(ml>j-i+1){
-                    idx=i;
-                    ml=j-i+1;
+                while(formed==needed){
+                    if(j-i+1<l){
+                    l=j-i+1;
+                    mi=i;
                 }
-                if(main.find(s[i])!=main.end()){
-                    main[s[i]]--;
-                    if(main[s[i]]<m[s[i]]){
-                        formed--;
+                    if(m2.find(s[i])!=m2.end()){
+                        m1[s[i]]--;
+                        if(m1[s[i]]<m2[s[i]]){
+                            needed--;
+                        }
                     }
+                    i++;
                 }
-                i++;
-            }
         }
-        if(idx==-1){
+        if(mi==-1){
             return "";
         }
-        return s.substr(idx,ml);
+        return s.substr(mi,l);
     }
 };
