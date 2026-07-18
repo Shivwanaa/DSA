@@ -23,7 +23,7 @@ public:
                     l=j-i+1;
                     mi=i;
                 }
-                    if(m2.find(s[i])!=m2.end()){
+                    if(m1.find(s[i])!=m2.end()){
                         m1[s[i]]--;
                         if(m1[s[i]]<m2[s[i]]){
                             needed--;
