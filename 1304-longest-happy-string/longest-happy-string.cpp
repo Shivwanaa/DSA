@@ -1,37 +1,37 @@
 class Solution {
 public:
     string longestDiverseString(int a, int b, int c) {
-        string ans;
-        auto comp=[](pair<char,int>a,pair<char,int>b){
-            return a.second<b.second;
-        };
-        priority_queue<pair<char,int>,vector<pair<char,int>>,decltype(comp)>q(comp);
-        if(a>0)
-        q.push({'a',a});
-        if(b>0)
-        q.push({'b',b});
-        if(c>0)
-        q.push({'c',c});
+        string ans="";
+        priority_queue<pair<int,char>>q;
+        if(a)
+        q.push({a,'a'});
+        if(b)
+        q.push({b,'b'});
+        if(c)
+        q.push({c,'c'});
         while(q.size()){
-            auto [ch,f]=q.top();
+            auto [freq,ch]=q.top();
             q.pop();
-            if(ans.size()>=2 && ch==ans[ans.size()-1] && ans[ans.size()-1]==ans[ans.size()-2 ]){
+            if(ans.size()>=2 && ans[ans.size()-2]==ch && ans[ans.size()-1]==ch){
                 if(q.empty()){
-                break;
-               }
-                auto [c1,f1]=q.top();
-                q.pop();
-                ans=ans+c1;
-                if(f1-1>0){
-                    q.push({c1,f1-1});
+                    return ans;
                 }
+            auto [freq1,ch1]=q.top();
+                q.pop();
+                ans=ans+ch1;
+                freq1--;
+                if(freq1){
+                    q.push({freq1,ch1});
+                }
+                q.push({freq,ch});
             }
             else{
-                ans=ans+ch;
-                f=f-1;
+                cout<<"pls";
+            ans=ans+ch;
+            freq--;
+            if(freq){
+                q.push({freq,ch});
             }
-            if(f>0){
-                q.push({ch,f});
             }
         }
         return ans;
