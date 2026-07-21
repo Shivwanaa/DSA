@@ -13,7 +13,7 @@ public:
             tot=tot+nums[i];
             mans=max(mans,ms);
             minans=min(minans,mins);
-            minans=min(minans,nums[i]);
+            // minans=min(minans,nums[i]);
             if(ms<0) ms=0;
         }
         cout<<minans;
