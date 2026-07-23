@@ -5,12 +5,12 @@ public:
         unordered_map<int,vector<int>>m;
         unordered_map<int,int>in;
         for(int i=0;i<numCourses;i++){
-            m[i]={};
             in[i]=0;
+            m[i]={};
         }
         for(auto i:prerequisites){
-            m[i[0]].push_back(i[1]);
-            in[i[1]]++;
+            m[i[1]].push_back(i[0]);
+            in[i[0]]++;
         }
         queue<int>q;
         for(auto i:in){
@@ -19,20 +19,18 @@ public:
             }
         }
         while(q.size()){
-            int f=q.front();
+            int t=q.front();
             q.pop();
-            ans.push_back(f);
-            for(auto i:m[f]){
-                in[i]--;
-                if(in[i]==0){
-                    q.push(i);
-                }
+            ans.push_back(t);
+            for(auto j:m[t]){
+                in[j]--;
+                if(in[j]==0)
+                q.push(j);
             }
         }
         if(ans.size()!=numCourses){
             return {};
         }
-        reverse(ans.begin(),ans.end());
         return ans;
     }
 };
