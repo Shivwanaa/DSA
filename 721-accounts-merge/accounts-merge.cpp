@@ -10,50 +10,46 @@ class DSU{
             s[i]=1;
         }
     }
-    int find(int x){
-        if(p[x]!=x){
-            return find(p[x]);
+    int find(int node){
+        if(p[node]!=node){
+            return find(p[node]);
         }
-        return p[x];
+        return p[node];
     }
     bool Union(int x,int y){
         int px=find(x);
         int py=find(y);
-        if(px==py){
-            return false;
-        }
+        if(px==py) return false;
         p[px]=py;
-        s[py]=s[px]+s[py];
+        s[px]=s[py]+s[px];
         return true;
     }
 };
 class Solution {
 public:
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
-        unordered_map<string,int>mail;
-        int l=0;
+        vector<vector<string>>ans;
+        unordered_map<string,int>m;
         DSU dsu(accounts.size());
         for(int i=0;i<accounts.size();i++){
             for(int j=1;j<accounts[i].size();j++){
-                if(mail.find(accounts[i][j])!=mail.end()){
-                    dsu.Union(mail[accounts[i][j]],i);
+                if(m.find(accounts[i][j])!=m.end()){
+                    dsu.Union(m[accounts[i][j]],i);
                 }
                 else{
-                mail[accounts[i][j]]=i;
+                m[accounts[i][j]]=i;
                 }
             }
         }
-        vector<vector<string>>ans;
-        map<int,vector<string>>anst;
-        for(auto i:mail){
-            anst[dsu.find(i.second)].push_back(i.first);
+        map<int,vector<string>>temp;
+        for(auto i:m){
+            temp[dsu.find(i.second)].push_back(i.first);
         }
-        for(auto i:anst){
-            vector<string>t;
+        for(auto i:temp){
+            // vector<string>t;
             sort(i.second.begin(),i.second.end());
-            t.push_back(accounts[i.first][0]);
-            t.insert(t.end(),i.second.begin(),i.second.end());
-            ans.push_back(t);
+            i.second.insert(i.second.begin(),accounts[i.first][0]);
+            ans.push_back(i.second);
         }
         return ans;
     }
