@@ -1,25 +1,26 @@
 class Solution {
 public:
 vector<vector<int>>ans;
-    void check(vector<int>& nums,vector<int>tp,int i,vector<int>fr){
-        if(tp.size()==nums.size()){
-            ans.push_back(tp);
+    void check(int i,vector<int>& nums,vector<int>t,vector<bool>v){
+        if(t.size()==nums.size()){
+            ans.push_back(t);
             return;
         }
         for(int j=0;j<nums.size();j++){
-            if(!fr[j]){
-            tp.push_back(nums[j]);
-            fr[j]=1;
-            check(nums,tp,j,fr);
-            tp.pop_back();
-            fr[j]=0;
+            if(!v[j]){
+            t.push_back(nums[j]);
+            v[j]=true;
+            check(j,nums,t,v);
+            t.pop_back();
+            v[j]=false;
             }
         }
+        return;
     }
     vector<vector<int>> permute(vector<int>& nums) {
-        vector<int>tp;
-        vector<int>fr(nums.size(),0);
-        check(nums,tp,0,fr);
+        vector<int>t;
+        vector<bool>v(nums.size(),false);
+        check(0,nums,t,v);
         return ans;
     }
 };
