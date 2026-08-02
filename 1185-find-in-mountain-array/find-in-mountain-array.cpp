@@ -17,13 +17,13 @@ public:
         if(target<mountainArr.get(0) && target<mountainArr.get(j)){
             return -1;
         }
-        while(i<j){
+        while(i<=j){
             int mid=(i+j)/2;
             if(mountainArr.get(mid)<mountainArr.get(mid+1)){
                 i=mid+1;
             }
             else{
-                j=mid;
+                j=mid-1;
             }
         }
         cout<<idx;
