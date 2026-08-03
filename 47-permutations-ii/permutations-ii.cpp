@@ -1,32 +1,29 @@
 class Solution {
 public:
 vector<vector<int>>ans;
-    void check(vector<int>& nums,vector<int>tp,unordered_map<int,int>&m){
-        if(tp.size()==nums.size()){
-            ans.push_back(tp);
+set<vector<int>>pans;
+    void check(int i,vector<int>& nums,vector<int>t,vector<int>v){
+        if(t.size()==nums.size()){
+            pans.insert(t);
             return;
         }
-        //1-2
-        //2-1
-        for(auto &i:m){
-            if(i.second==0){
-                continue;
+        for(int j=0;j<nums.size();j++){
+            if(v[j]==0){
+            v[j]=1;
+            t.push_back(nums[j]);
+            check(i,nums,t,v);
+            t.pop_back();
+            v[j]=0;
             }
-            tp.push_back(i.first);
-            m[i.first]--;
-            check(nums,tp,m);
-            tp.pop_back();
-            m[i.first]++;
         }
     }
     vector<vector<int>> permuteUnique(vector<int>& nums) {
-        vector<int>tp;
-        unordered_map<int,int>m;
-        for(int i=0;i<nums.size();i++){
-            m[nums[i]]++;
+        vector<int>t;
+        vector<int>v(nums.size(),0);
+        check(0,nums,t,v);
+        for(auto i:pans){
+            ans.push_back(i);
         }
-        // vector<int>freq(nums.size(),0);
-        check(nums,tp,m);
         return ans;
     }
 };
