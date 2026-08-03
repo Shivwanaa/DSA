@@ -1,38 +1,49 @@
 class Solution {
 public:
-    bool check(vector<int>& nums,int i,int a,int b,int c,int d){
-        if(i==nums.size() && !a && !b && !c &&!d){
+    bool check(int i,int a,int b,int c,int d,int s,vector<int>& matchsticks){
+        if(i==matchsticks.size() && a==s && b==s && c==s && d==s){
             return true;
         }
-        if(a>=nums[i]){
-            if(check(nums,i+1,a-nums[i],b,c,d)){
-                return true;
-            }
+        if(i==matchsticks.size()){
+            return false;
         }
-        if(b>=nums[i]){
-            if(check(nums,i+1,a,b-nums[i],c,d))
+        bool ans=false;
+        if(a+matchsticks[i]<=s){
+        ans=ans||check(i+1,a+matchsticks[i],b,c,d,s,matchsticks);
+        if(ans){
             return true;
         }
-        if(c>=nums[i]){
-            if(check(nums,i+1,a,b,c-nums[i],d))
+        }
+        if(b+matchsticks[i]<=s){
+        ans=ans||check(i+1,a,b+matchsticks[i],c,d,s,matchsticks);
+        if(ans){
             return true;
         }
-        if(d>=nums[i]){
-            if(check(nums,i+1,a,b,c,d-nums[i]))
+        }
+        if(c+matchsticks[i]<=s){
+        ans=ans||check(i+1,a,b,c+matchsticks[i],d,s,matchsticks);
+        if(ans){
             return true;
         }
-        return false;
+        }
+        if(d+matchsticks[i]<=s){
+        ans=ans||check(i+1,a,b,c,d+matchsticks[i],s,matchsticks);
+        if(ans){
+            return true;
+        }
+        }
+
+        return ans;
     }
-    bool makesquare(vector<int>& nums) {
+    bool makesquare(vector<int>& matchsticks) {
         int s=0;
-        for(int i=0;i<nums.size();i++){
-            s=s+nums[i];
+        sort(matchsticks.rbegin(), matchsticks.rend());
+        for(int i=0;i<matchsticks.size();i++){
+            s=s+matchsticks[i];
         }
         if(s%4!=0){
             return false;
         }
-        s=s/4;
-        sort(nums.rbegin(),nums.rend());
-        return check(nums,0,s,s,s,s);
+        return check(0,0,0,0,0,s/4,matchsticks);
     }
 };
