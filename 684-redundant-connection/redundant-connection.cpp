@@ -13,7 +13,7 @@ class DSU{
 
     int find(int node){
         if(p[node]!=node){
-            return find(p[node]);
+           p[node] = find(p[node]); 
         }
         return p[node];
     }
