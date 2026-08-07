@@ -3,27 +3,28 @@ class DSU{
     vector<int>p;
     vector<int>s;
     DSU(int n){
-        p.resize(n);
-        s.resize(n);
-        for(int i=0;i<n;i++){
+        p.resize(n+1);
+        s.resize(n+1);
+        for(int i=0;i<n+1;i++){
             p[i]=i;
             s[i]=1;
         }
     }
+
     int find(int node){
         if(p[node]!=node){
-            return find(p[node]);
+           p[node] = find(p[node]); 
         }
         return p[node];
     }
-    bool Union(int x,int y){
-        int px=find(x);
-        int py=find(y);
-        if(px==py){
+    bool Union(int u,int v){
+        int pu=find(u);
+        int pv=find(v);
+        if(pu==pv){
             return false;
         }
-        p[px]=py;
-        s[py]=s[py]+s[px];
+        p[pu]=pv;
+        s[pv]=s[pv]+s[pu];
         return true;
     }
 };
@@ -37,11 +38,11 @@ public:
                 v.push_back({d,i,j});
             }
         }
-        sort(v.begin(),v.end());
         int ans=0;
+        sort(v.begin(),v.end());
         DSU dsu(points.size());
         for(auto i:v){
-            auto [a,b,c]=i;
+            auto[a,b,c]=i;
             if(dsu.find(b)!=dsu.find(c)){
             dsu.Union(b,c);
             ans=ans+a;
@@ -49,4 +50,5 @@ public:
         }
         return ans;
     }
+
 };
