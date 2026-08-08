@@ -2,6 +2,7 @@ class Solution {
 public:
 int dir[4][2]={{1,0},{0,1},{-1,0},{0,-1}};
 vector<vector<int>>dp;
+const int MOD = 1e9 + 7;
     int check(int i,int j,vector<vector<int>>& matrix){
         int ans=1;
         if(dp[i][j]!=-1){
