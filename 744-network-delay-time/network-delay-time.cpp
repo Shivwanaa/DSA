@@ -18,6 +18,7 @@ public:
             ans=max(ans,time);
             v.insert(node);
             for(auto i:m[node]){
+                if(!v.count(i.first))
                 q.push({time+i.second,i.first});
             }
         }
