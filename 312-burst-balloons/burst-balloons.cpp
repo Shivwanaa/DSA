@@ -5,16 +5,17 @@ vector<vector<int>>dp;
         if(j-i<1){
             return 0;
         }
+        int ans=0;
         if(dp[i][j]!=-1){
             return dp[i][j];
         }
-        int ans=0;
         for(int k=i+1;k<j;k++){
-            ans=max(ans,nums[i]*nums[k]*nums[j]+check(i,k,nums)+check(k,j,nums));
+            ans=max(ans,nums[k]*nums[i]*nums[j]+check(i,k,nums)+check(k,j,nums));
         }
         return dp[i][j]=ans;
     }
     int maxCoins(vector<int>& nums) {
+        
         nums.insert(nums.begin(),1);
         nums.push_back(1);
         dp=vector<vector<int>>(nums.size()+1,vector<int>(nums.size()+1,-1));
