@@ -5,7 +5,7 @@ vector<vector<int>>dp;
         if(amount==0){
             return 0;
         }
-        if(amount<0||i>=coins.size()){
+        if(i==coins.size()||amount<0){
             return 1e9;
         }
         if(dp[i][amount]!=-1){
@@ -16,7 +16,7 @@ vector<vector<int>>dp;
         return dp[i][amount]=min(p,np);
     }
     int coinChange(vector<int>& coins, int amount) {
-        dp=vector<vector<int>>(coins.size()+1,vector<int>(amount+1,-1));
+         dp=vector<vector<int>>(coins.size()+1,vector<int>(amount+1,-1));
         int ans= check(0,coins,amount);
         if(ans==1e9){
             return -1;
