@@ -7,21 +7,23 @@ public:
                 continue;
             }
             queue<int>q;
-            c[i]=-1;
             q.push(i);
+            c[i]=1;
             while(q.size()){
-                int t=q.front();
+                int node=q.front();
                 q.pop();
-                for(auto i:graph[t]){
-                    if(c[i]==c[t]){
+
+                for(auto j:graph[node]){
+                    if(c[j]==c[node]){
                         return false;
                     }
-                    else if(c[i]==0){
-                        q.push(i);
-                        c[i]=-c[t];
+                    else if(c[j]==0){
+                        q.push(j);
+                        c[j]=-c[node];
                     }
                 }
             }
+            
         }
         return true;
     }
