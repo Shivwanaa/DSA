@@ -1,49 +1,39 @@
 class Solution {
 public:
-    double check(string a,string b,map<pair<string,string>,double>&m,unordered_map<string,vector<pair<string,double>>>&dfs,double temp,unordered_set<string>&v){
-        if(dfs.find(a)==dfs.end() ||dfs.find(b)==dfs.end()){
+    double check(string n1,string n2,unordered_map<string,vector<pair<string,double>>>&m,unordered_set<string>v){
+        if(n1==n2){
+            return 1.0;
+        }
+        if(v.count(n1)){
             return -1.0;
         }
-        if(a==b){
-            return temp;
+        v.insert(n1);
+        for(auto i:m[n1]){
+            if(!v.count(i.first)){
+            double result = check(i.first, n2, m, v);
+            if(result != -1.0) {
+                return i.second * result;
+            }
+            }
         }
-        v.insert(a);
-        for(auto i:dfs[a]){
-            if(!v.count(i.first)) {
-            double ans = check(
-                    i.first,
-                    b,
-                    m,
-                    dfs,
-                    temp * i.second,
-                    v
-                );
-
-                if(ans != -1.0) {
-                    return ans;
-                }
-        }
-        }
-        v.erase(a);
-        return -1.0;
+        return -1;
     }
-
-
     vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
-        vector<double>ans;
-        map<pair<string,string>,double>m;
-        int j=0;
-        unordered_map<string,vector<pair<string,double>>>dfs;
-        for(auto i:equations){
-            m[{i[0],i[1]}]=(values[j]);
-            m[{i[1],i[0]}]=(double(1/values[j]));
-            dfs[i[0]].push_back({i[1],values[j]});
-            dfs[i[1]].push_back({i[0],double(1.0/values[j])});
-            j++;
+        unordered_map<string,vector<pair<string,double>>>m;
+        for(int i=0;i<equations.size();i++){
+            m[equations[i][0]].push_back({equations[i][1],values[i]});
+            m[equations[i][1]].push_back({equations[i][0],1.0/values[i]});
         }
+        vector<double> ans;
+
         for(auto i:queries){
+            if(!m.count(i[0])||!m.count(i[1])){
+                ans.push_back(-1.0);
+            }
+            else{
             unordered_set<string>v;
-            ans.push_back(check(i[0],i[1],m,dfs,1.0,v));
+            ans.push_back(check(i[0],i[1],m,v));
+            }
         }
         return ans;
     }
