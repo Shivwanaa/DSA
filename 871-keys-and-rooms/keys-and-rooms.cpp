@@ -1,15 +1,19 @@
 class Solution {
 public:
-    void check(vector<vector<int>>& rooms,unordered_set<int>&v,int curr){
-        v.insert(curr);
-        for(auto i:rooms[curr]){
-            if(!v.count(i))
-            check(rooms,v,i);
+    void check(int rno,vector<vector<int>>& rooms,int n,unordered_set<int>&v){
+        if(v.count(rno)){
+            return ;
+        }
+        v.insert(rno);
+        for(auto i:rooms[rno]){
+            if(!v.count(i)){
+                check(i,rooms,n,v);
+            }
         }
     }
     bool canVisitAllRooms(vector<vector<int>>& rooms) {
         unordered_set<int>v;
-        check(rooms,v,0);
+        check(0,rooms,rooms.size(),v);
         if(v.size()==rooms.size()){
             return true;
         }
