@@ -40,7 +40,7 @@ public:
                         continue;
                     }
                 }
-                if(temp>='a' && temp<='z'){
+                if(temp>='a' && temp<='g'){
                     int shift=temp-'a';
                     nMask|=(1<<shift);
                 }
