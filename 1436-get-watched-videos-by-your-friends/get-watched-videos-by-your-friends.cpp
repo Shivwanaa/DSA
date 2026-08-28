@@ -7,10 +7,11 @@ public:
         q.push({id,0});
         unordered_set<int>fr;
         unordered_map<string,int>a;
+        fr.insert(id);
         while(q.size()){
             auto[f,l]=q.front();
             q.pop();
-            fr.insert(f);
+            
             if(l>level){
                 break;
             }
