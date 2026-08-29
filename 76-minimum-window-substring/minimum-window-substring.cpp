@@ -1,40 +1,42 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        unordered_map<char,int>m1;
-        unordered_map<char,int>m2;
+        unordered_map<char,int>m;
         for(auto i:t){
-            m2[i]++;
+            m[i]++;
         }
-        int formed=m2.size();
-        int needed=0;
+        int count=m.size();
+        int c=0;
+        unordered_map<char,int>mp;
+        int l=-1,r=0;
+        int len=1e9;
         int i=0;
-        int l=1e9;
-        int mi=-1;
         for(int j=0;j<s.size();j++){
-            if(m2.find(s[j])!=m2.end()){
-                m1[s[j]]++;
-                if(m1[s[j]]==m2[s[j]]){
-                    needed++;
+            if(m.find(s[j])!=m.end()){
+                mp[s[j]]++;
+                if(mp[s[j]]==m[s[j]]){
+                    c++;
                 }
             }
-                while(formed==needed){
-                    if(j-i+1<l){
-                    l=j-i+1;
-                    mi=i;
+            while(c==count){
+                if(j-i+1<len){
+                l=i;
+                r=j;
+                len=r-l+1;
                 }
-                    if(m1.find(s[i])!=m2.end()){
-                        m1[s[i]]--;
-                        if(m1[s[i]]<m2[s[i]]){
-                            needed--;
-                        }
-                    }
-                    i++;
+                if(mp.find(s[i])!=mp.end()){
+                mp[s[i]]--;
+                if(mp[s[i]]<m[s[i]]){
+                    c--;
                 }
+                }
+                i++;
+            }
         }
-        if(mi==-1){
+        if(l==-1){
             return "";
         }
-        return s.substr(mi,l);
+        return s.substr(l,r-l+1);
     }
+
 };
