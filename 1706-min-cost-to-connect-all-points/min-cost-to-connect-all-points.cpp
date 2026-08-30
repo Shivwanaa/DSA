@@ -38,17 +38,16 @@ public:
                 v.push_back({d,i,j});
             }
         }
-        int ans=0;
         sort(v.begin(),v.end());
         DSU dsu(points.size());
-        for(auto i:v){
-            auto[a,b,c]=i;
-            if(dsu.find(b)!=dsu.find(c)){
-            dsu.Union(b,c);
-            ans=ans+a;
+        int ans=0;
+        for(auto [i,n1,n2]:v){
+            if(dsu.find(n1)==dsu.find(n2)){
+                continue;
             }
+            dsu.Union(n1,n2);
+            ans=ans+i;
         }
         return ans;
     }
-
 };
