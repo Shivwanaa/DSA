@@ -1,19 +1,18 @@
 class Solution {
 public:
 vector<vector<int>>ans;
-    void check(int node,vector<vector<int>>& graph,int n,vector<int>temp){
-        if(node==n){
-            temp.push_back(n);
-            ans.push_back(temp);
-            return;
+    void check(int node,vector<vector<int>>& graph,vector<int>tp){
+        tp.push_back(node);
+        if(node==graph.size()-1){
+            ans.push_back(tp);
         }
-        temp.push_back(node);
         for(auto i:graph[node]){
-            check(i,graph,n,temp);
+            check(i,graph,tp);
         }
+        // ans.push_back(tp);
     }
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
-        check(0,graph,graph.size()-1,{});
+        check(0,graph,{});
         return ans;
     }
 };
