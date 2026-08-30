@@ -1,40 +1,35 @@
 class DSU{
     public:
     vector<int>p;
-    vector<int>s;
-    int c;
-
+    int n;
+    int tot;
     DSU(int n){
-        c=n;
-        p.resize(n);
-        s.resize(n);
-        for(int i=0;i<n;i++){
+        p.resize(n+1);
+        for(int i=0;i<=n;i++){
             p[i]=i;
-            s[i]=1;
         }
+        tot=n;
     }
-    int find(int x){
-        if(x!=p[x]){
-            return find(p[x]);
+    int find(int node){
+        if(p[node]!=node){
+            return find(p[node]);
         }
-        return p[x];
+        return p[node];
     }
-    bool Union(int x,int y){
-        int px=find(x);
-        int py=find(y);
-        if(px==py){
+    bool Union(int u,int v){
+        int pu=find(u);
+        int pv=find(v);
+        if(pu==pv){
             return false;
         }
-        c--;
-        p[px]=py;
-        s[py]=s[py]+s[px];
+        p[pu]=pv;
+        tot--;
         return true;
     }
 };
 class Solution {
 public:
     int makeConnected(int n, vector<vector<int>>& connections) {
-        //count no of unions and also no of excess wires inside each union
         if(connections.size()<n-1){
             return -1;
         }
@@ -43,6 +38,6 @@ public:
             if(dsu.find(i[0])!=dsu.find(i[1]))
             dsu.Union(i[0],i[1]);
         }
-        return dsu.c-1;
+        return dsu.tot-1;
     }
 };
