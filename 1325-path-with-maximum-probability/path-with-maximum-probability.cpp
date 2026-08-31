@@ -1,33 +1,31 @@
 class Solution {
 public:
     double maxProbability(int n, vector<vector<int>>& edges, vector<double>& succProb, int start_node, int end_node) {
+        //djikistra
         unordered_map<int,vector<pair<int,double>>>m;
         for(int i=0;i<edges.size();i++){
-            m[edges[i][0]].push_back({edges[i][1],double(succProb[i])});
-            m[edges[i][1]].push_back({edges[i][0],double(succProb[i])});
+            m[edges[i][0]].push_back({edges[i][1],succProb[i]});
+            m[edges[i][1]].push_back({edges[i][0],succProb[i]});
         }
-        priority_queue<pair<double,int>>pq;
-        pq.push({1.0,start_node});
-        int ans=0;
-        vector<int>vist(n,0);
-        vector<double>probs(n,-1);
-        probs[start_node]=1.0;
-        while(pq.size()){
-            auto[prob,node]=pq.top();
-            pq.pop();
-            if(prob<probs[node]){
+        priority_queue<pair<double,int>>q;
+        q.push({1,start_node});
+        vector<double>dist(n,0);
+        while(q.size()){
+            auto[d,node]=q.top();
+            q.pop();
+            if(d<dist[node]){
                 continue;
             }
             if(node==end_node){
-                return prob;
+                return d;
             }
             for(auto i:m[node]){
-                if(probs[i.first]<prob*i.second){
-                probs[i.first]=prob*i.second;
-                pq.push({prob*i.second,i.first});
+                if(d*i.second>dist[i.first]){
+                    dist[i.first]=d*i.second;
+                    q.push({d*i.second,i.first});
                 }
             }
         }
-        return 0.0;
+        return 0;
     }
 };
