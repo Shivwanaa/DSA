@@ -21,11 +21,10 @@ public:
                     return ans;
                 }
                 for(auto k:graph[node]){
-                    
                     int bit_temp=(1<<k)|visit;
-                    if(v.count({k,bit_temp})){
-                        continue;
-                    }
+                    // if(v.count({k,bit_temp})){
+                    //     continue;
+                    // }
                     q.push({k,bit_temp});
                 }
             }
