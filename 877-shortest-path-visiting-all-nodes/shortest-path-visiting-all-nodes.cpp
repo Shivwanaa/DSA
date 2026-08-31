@@ -3,30 +3,29 @@ public:
     int shortestPathLength(vector<vector<int>>& graph) {
         queue<pair<int,int>>q;
         for(int i=0;i<graph.size();i++){
-            int m=1<<i;
-            q.push({i,m});
+            int n=1<<i;
+            q.push({i,n});
         }
-        set<pair<int,int>>v;
-        int bit_act=(1<<graph.size())-1;
         int ans=0;
-
+        set<pair<int,int>>v;
         while(q.size()){
             int s=q.size();
             for(int i=0;i<s;i++){
-                auto[node,mask]=q.front();
+                auto[node,visit]=q.front();
                 q.pop();
-                if(v.count({node,mask})){
+                if(v.count({node,visit})){
                     continue;
                 }
-                v.insert({node,mask});
-                if(mask==bit_act){
+                v.insert({node,visit});
+                if(visit==(1<<graph.size())-1){
                     return ans;
                 }
                 for(auto k:graph[node]){
-                    int bit_temp=(1<<k)|mask;
-                    if(v.count({k,mask})){
+                    if(v.count({k,visit})){
                         continue;
                     }
+                    int bit_temp=(1<<k)|visit;
+
                     q.push({k,bit_temp});
                 }
             }
