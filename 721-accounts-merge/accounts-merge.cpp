@@ -23,8 +23,8 @@ class DSU{
         if(pu==pv){
             return false;
         }
-        p[pu]=pv;
-        s[pv]=s[pv]+s[pu];
+        p[pv]=pu;
+        s[pu]=s[pv]+s[pu];
         return true;
     }
 };
@@ -32,32 +32,32 @@ class Solution {
 public:
 
     vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
+        vector<vector<string>>ans;
+        unordered_map<string,int>m;
         DSU dsu(accounts.size());
-        unordered_map<string,int>v;
-        unordered_map<int,vector<string>>m;
         for(int i=0;i<accounts.size();i++){
             for(int j=1;j<accounts[i].size();j++){
-                if(v.count(accounts[i][j])){
-                    dsu.Union(v[accounts[i][j]],i);
+                if(m.find(accounts[i][j])!=m.end()){
+                    dsu.Union(m[accounts[i][j]],i);
                 }
-                else{
-                v[accounts[i][j]]=i;
-                }
+                else
+                m[accounts[i][j]]=i;
             }
         }
-        for(auto i:v){
-            m[dsu.find(i.second)].push_back(i.first);
-        }
-        vector<vector<string>>ans;
+        unordered_map<int,vector<string>>mp;
         for(auto i:m){
-            
-            sort(i.second.begin(),i.second.end());
+            mp[dsu.find(i.second)].push_back(i.first);
+        }
+        for(auto i:mp){
             vector<string>t;
-            t=i.second;
+            for(auto j:i.second){
+                t.push_back(j);
+            }
+            sort(t.begin(),t.end());
             t.insert(t.begin(),accounts[i.first][0]);
             ans.push_back(t);
-
         }
+
         return ans;
     }
 };
