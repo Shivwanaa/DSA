@@ -1,11 +1,11 @@
 class Solution {
 public:
     int minimumTime(int n, vector<vector<int>>& relations, vector<int>& time) {
+        vector<int>tim(n+1,0);
         queue<pair<int,int>>q;
-        unordered_map<int,vector<int>>m;
         unordered_map<int,int>in;
+        unordered_map<int,vector<int>>m;
         for(int i=1;i<=n;i++){
-            m[i]={};
             in[i]=0;
         }
         for(auto i:relations){
@@ -14,23 +14,22 @@ public:
         }
         for(auto i:in){
             if(i.second==0){
-                cout<<i.first<<endl;
-                q.push({i.first,time[i.first-1]});
+                q.push({time[i.first-1],i.first});
+                tim[i.first-1]=time[i.first-1];
             }
         }
         int ans=0;
-        vector<int>t(n+1,0);
         while(q.size()){
-            auto[course,times]=q.front();
+            auto[t,f]=q.front();
             q.pop();
-            // t[course]=max(t[course],times);
-            ans=max(ans,times);
-            for(auto i:m[course]){
-                t[i] = max(t[i], times);
+            ans=max(ans,tim[f-1]);
+            for(auto i:m[f]){
                 in[i]--;
+                tim[i-1]=max(tim[i-1],tim[f-1]+time[i-1]);
                 if(in[i]==0){
-                    q.push({i,t[i]+time[i-1]});
+                    q.push({tim[i-1],i});
                 }
+
             }
         }
         return ans;
