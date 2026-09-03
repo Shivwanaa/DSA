@@ -26,7 +26,7 @@ vector<vector<int>>ans;
         }
         check(root->left,targetSum,temp);
         check(root->right,targetSum,temp);
-        temp.pop_back();
+         
     }
     vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
         vector<int>temp;
