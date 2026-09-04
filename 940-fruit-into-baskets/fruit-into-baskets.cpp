@@ -1,19 +1,18 @@
 class Solution {
 public:
-    int totalFruit(vector<int>& nums) {
-        int ans=0;
-        int i=0;
+    int totalFruit(vector<int>& fruits) {
+        int i=0,ans=0;
         unordered_map<int,int>m;
-        for(int j=0;j<nums.size();j++){
-            m[nums[j]]++;
-            if(m.size()>2){
-                m[nums[i]]--;
-                if(m[nums[i]]==0){
-                    m.erase(nums[i]);
+        for(int j=0;j<fruits.size();j++){
+            m[fruits[j]]++;
+            while(i<j && m.size()>2){
+                m[fruits[i]]--;
+                if(m[fruits[i]]==0){
+                    m.erase(fruits[i]);
                 }
                 i++;
             }
-            cout<<j<<" "<<i<<endl;
+
             ans=max(ans,j-i+1);
         }
         return ans;
