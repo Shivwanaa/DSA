@@ -8,13 +8,12 @@ vector<int>dp;
         if(dp[i]!=-1){
             return dp[i];
         }
-        int on=cost[i]+check(cost,i+1);
+        int one=cost[i]+check(cost,i+1);
         int two=cost[i]+check(cost,i+2);
-        dp[i]= min({on,two});
-        return dp[i];
+        return dp[i]=min(one,two);
     }
     int minCostClimbingStairs(vector<int>& cost) {
-        dp=vector<int>(cost.size()+1,-1);
+        dp=vector<int>(cost.size(),-1);
         return min(check(cost,0),check(cost,1));
     }
 };
