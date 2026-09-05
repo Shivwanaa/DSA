@@ -1,42 +1,42 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
+        unordered_map<char,int>mor;
         unordered_map<char,int>m;
         for(auto i:t){
-            m[i]++;
+            mor[i]++;
         }
-        int count=m.size();
+        int closed=mor.size();
+        int j=0;
+        int idx=-1;
         int c=0;
-        unordered_map<char,int>mp;
-        int l=-1,r=0;
         int len=1e9;
-        int i=0;
-        for(int j=0;j<s.size();j++){
-            if(m.find(s[j])!=m.end()){
-                mp[s[j]]++;
-                if(mp[s[j]]==m[s[j]]){
-                    c++;
-                }
+        for(int i=0;i<s.size();i++){
+            
+            if(mor.find(s[i])!=m.end()){
+            m[s[i]]++;
+            if(m[s[i]]==mor[s[i]]){
+                c++;
             }
-            while(c==count){
-                if(j-i+1<len){
-                l=i;
-                r=j;
-                len=r-l+1;
-                }
-                if(mp.find(s[i])!=mp.end()){
-                mp[s[i]]--;
-                if(mp[s[i]]<m[s[i]]){
-                    c--;
-                }
-                }
-                i++;
             }
+            while(c==closed){
+                if(len>i-j+1){
+                    len=i-j+1;
+                    idx=j;
+                }
+                if(m.find(s[j])!=m.end()){
+                    m[s[j]]--;
+                    if(m[s[j]]<mor[s[j]]){
+                        c--;
+                    }
+                }
+                j++;
+            }
+
         }
-        if(l==-1){
+        if(idx==-1){
             return "";
         }
-        return s.substr(l,r-l+1);
+        return s.substr(idx,len);
     }
-
 };
