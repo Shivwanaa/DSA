@@ -1,28 +1,31 @@
 class Solution {
 public:
-    bool check(vector<vector<char>>& board, string word,int i,int j,int idx){
-        if(idx==word.size()){
+int dir[4][2]={{1,0},{0,1},{-1,0},{0,-1}};
+    bool check(int i,int j,int k,vector<vector<char>> &board, string word){
+        if(k==word.size()-1){
             return true;
         }
-        if(i<0||j<0||i>=board.size()||j>=board[0].size()){
-            return false;
+        char t=board[i][j];
+        board[i][j]='0';
+        for(auto m:dir){
+            int ni=i+m[0];
+            int nj=j+m[1];
+            if(ni>=0 && nj>=0 && ni<board.size() && nj<board[0].size()){
+                if(board[ni][nj]!='0' && word[k+1]==board[ni][nj]){
+                    if(check(ni,nj,k+1,board,word)){
+                        return true;
+                    }
+                }
+            }
         }
-        if(board[i][j]!=word[idx]){
-            return false;
-        }
-        char temp=board[i][j];
-        board[i][j]='*';
-        bool ans= check(board,word,i+1,j,idx+1)||check(board,word,i-1,j,idx+1)||check(board,word,i,j+1,idx+1)||check(board,word,i,j-1,idx+1);
-
-        board[i][j]=temp;
-        return ans;
+        board[i][j]=t;
+        return false;
     }
     bool exist(vector<vector<char>>& board, string word) {
-        bool f=false;
         for(int i=0;i<board.size();i++){
             for(int j=0;j<board[i].size();j++){
-                if(board[i][j]==word[0]){
-                    if(check(board,word,i,j,0)){
+                if(word[0]==board[i][j]){
+                    if(check(i,j,0,board,word)){
                         return true;
                     }
                 }
