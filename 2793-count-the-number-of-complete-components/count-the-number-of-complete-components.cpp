@@ -1,59 +1,56 @@
 class DSU{
-public:
-vector<int>p;
+    public:
+    vector<int>p;
+    int c=0;
     vector<int>s;
-    vector<int>e;
-    int c;
     DSU(int n){
-        c=n;
-        e.resize(n);
         p.resize(n);
         s.resize(n);
         for(int i=0;i<n;i++){
             p[i]=i;
             s[i]=1;
         }
+        c=n;
     }
-    int find(int x){
-        if(p[x]!=x){
-            return find(p[x]);
+    int find(int node){
+        if(p[node]!=node){
+            return find(p[node]);
         }
-        return p[x];
+        return p[node];
     }
-    bool Union(int x,int y){
-        int px=find(x);
-        int py=find(y);
-        if(px==py){
+    bool Union(int u,int v){
+        int pu=find(u);
+        int pv=find(v);
+        if(pu==pv){
             return false;
         }
+        p[pu]=pv;
+        s[pv]=s[pu]+s[pv];
         c--;
-        p[px]=py;
-        s[py]=s[py]+s[px];
         return true;
     }
 };
 class Solution {
 public:
     int countCompleteComponents(int n, vector<vector<int>>& edges) {
-        unordered_map<int,int>m;
         DSU dsu(n);
+        int ans=0;
         for(auto i:edges){
             dsu.Union(i[0],i[1]);
         }
+        unordered_map<int,int>m;
         for(auto i:edges){
-            int ro=dsu.find(i[0]);
-            m[ro]++;
+            m[dsu.find(i[0])]++;
         }
-        int c=0;
         for(int i=0;i<n;i++){
             if(dsu.find(i)==i){
-                int nodes=dsu.s[i];
-                int ee=(nodes*(nodes-1))/2;
-                if(m[i]==ee){
-                    c++;
+                int no=dsu.s[i];
+                int e=no*(no-1)/2;
+                if(e==m[i]){
+                    ans++;
                 }
             }
         }
-        return c;
+        return ans;
     }
 };
