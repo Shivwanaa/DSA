@@ -1,32 +1,34 @@
 class Solution {
 public:
     int networkDelayTime(vector<vector<int>>& times, int n, int k) {
-        unordered_set<int>v;
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>q;
         unordered_map<int,vector<pair<int,int>>>m;
         for(auto i:times){
             m[i[0]].push_back({i[1],i[2]});
         }
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>q;
         q.push({0,k});
-        
-        int ans=0;
+        vector<int>d(n+1,1e9);
+        d[k]=0;
         while(q.size()){
-            auto[d,node]=q.top();
+            auto[t,node]=q.top();
             q.pop();
-            if(v.count(node)){
+            if(d[node]<t){
                 continue;
             }
-            v.insert(node);
-            ans=max(ans,d);
             for(auto i:m[node]){
-                if(!v.count(i.first)){
-                q.push({d+i.second,i.first});
+                if(d[i.first]>d[node]+i.second){
+                    d[i.first]=d[node]+i.second;
+                    q.push({d[node]+i.second,i.first});
                 }
             }
         }
-
-        if(v.size()==n)
+        int ans=0;
+        for(int i=1;i<d.size();i++){
+            ans=max(ans,d[i]);
+        }
+        if(ans==1e9){
+            return -1;
+        }
         return ans;
-        return -1;
     }
 };
