@@ -1,46 +1,31 @@
-class DSU{
-    public:
-    vector<int>p;
-    int s=0;
-    DSU(int n){
-        p.resize(n);
-        s=n;
-        for(int i=0;i<n;i++){
-            p[i]=i;
-        }
-        s=n;
-    }
-    int find(int node){
-        if(node!=p[node]){
-            return p[node]=find(p[node]);
-        }
-        return p[node];
-    }
-    bool Union(int u,int v){
-        int pu=p[u];
-        int pv=p[v];
-        if(pu==pv){
-            return false;
-        }
-        p[pu]=pv;
-        s--;
-        return true;
-    }
-};
 class Solution {
 public:
+    void check(int node,unordered_map<int,vector<int>>m,unordered_set<int>&v){
+        if(v.count(node)){
+            return;
+        }
+        v.insert(node);
+        for(auto i:m[node]){
+            if(!v.count(i))
+            check(i,m,v);
+        }
+    }
     int findCircleNum(vector<vector<int>>& isConnected) {
-        DSU dsu(isConnected.size());
+        int ans=0;
+        unordered_map<int,vector<int>>m;
         for(int i=0;i<isConnected.size();i++){
             for(int j=0;j<isConnected[0].size();j++){
-                if(i!=j && isConnected[i][j]==1){
-                    int a=dsu.find(i);
-                    int b=dsu.find(j);
-                    if(a!=b)
-                    dsu.Union(i,j);
-                }
+                if(i!=j && isConnected[i][j]==1)
+                m[i].push_back(j);
             }
         }
-        return dsu.s;
+        unordered_set<int>v;
+        for(int i=0;i<isConnected.size();i++){
+            if(!v.count(i)){
+            check(i,m,v);
+            ans++;
+            }
+        }
+        return ans;
     }
 };
