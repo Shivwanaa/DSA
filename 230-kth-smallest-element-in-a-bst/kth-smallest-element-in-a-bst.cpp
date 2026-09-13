@@ -11,17 +11,25 @@
  */
 class Solution {
 public:
-vector<int>temp;
-    void check(TreeNode* root){
+int c=0;
+    int check(TreeNode* root, int k){
         if(!root){
-            return;
+            return -1;
         }
-        check(root->left);
-        temp.push_back(root->val);
-        check(root->right);
+        if(c==k){
+            return root->val;
+        }
+        int l=check(root->left,k);
+        if(l!=-1){
+            return l;
+        }
+        c++;
+        if(c==k){
+            return root->val;
+        }
+        return check(root->right,k);
     }
     int kthSmallest(TreeNode* root, int k) {
-        check(root);
-        return temp[k-1];
+        return check(root,k);
     }
 };
