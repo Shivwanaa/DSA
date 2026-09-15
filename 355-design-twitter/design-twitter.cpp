@@ -1,40 +1,44 @@
 class Twitter {
 public:
-unordered_map<int,vector<pair<int,int>>>tweets;
-int ord=0;
-unordered_map<int,unordered_set<int>>fr;
+unordered_map<int,unordered_set<int>>friends;
+unordered_map<int,vector<pair<int,int>>>posts;
+int t =0;
     Twitter() {
-    }
-    void postTweet(int userId, int tweetId) {
-        tweets[userId].push_back({ord,tweetId});
-        ord++;
-    }
-    vector<int> getNewsFeed(int userId) { 
-        priority_queue<pair<int,int>>q;
-        vector<int>ans;
         
-        for(auto i:tweets[userId]){
-            q.push({i.first,i.second});
-        }
-        for(auto i:fr[userId]){
-            for(auto j:tweets[i]){
+    }
+    
+    void postTweet(int userId, int tweetId) {
+        friends[userId].insert(userId);
+        posts[userId].push_back({t,tweetId});
+        t++;
+    }
+    
+    vector<int> getNewsFeed(int userId) {
+        vector<int>ans;
+        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>q;
+        for(auto i:friends[userId]){
+            for(auto j:posts[i]){
                 q.push({j.first,j.second});
+                if(q.size()>10){
+                    q.pop();
+                }
             }
         }
-        int len=10;
-        while(q.size() && len){
-            auto [ord,tid]=q.top();
+        while(q.size()){
+            ans.push_back(q.top().second);
             q.pop();
-            ans.push_back(tid);
-            len--;
         }
+        reverse(ans.begin(), ans.end());
         return ans;
     }
+    
     void follow(int followerId, int followeeId) {
-        fr[followerId].insert(followeeId);
+        
+        friends[followerId].insert(followeeId);
     }
-    void unfollow(int followerId, int followeeId) { 
-        fr[followerId].erase(followeeId);
+    
+    void unfollow(int followerId, int followeeId) {
+        friends[followerId].erase(followeeId);
     }
 };
 
