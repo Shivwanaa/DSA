@@ -12,23 +12,21 @@
 class Solution {
 public:
 int ans=0;
-    void check(TreeNode* root,int val){
+    void check(TreeNode* root,int maxi){
         if(!root){
-            return ;
+            return;
         }
-        if(root->val>=val){
-            cout<<root->val<<" ";
+        int a;
+        if(maxi<=root->val){
+            maxi=root->val;
             ans++;
-            check(root->left,root->val);
-            check(root->right,root->val);
         }
-        else{
-            check(root->left,val);
-            check(root->right,val);
-        }
+        check(root->left,maxi);
+        check(root->right,maxi);
     }
     int goodNodes(TreeNode* root) {
-        check(root,-1e9);
+        //max from each dfs path
+        check(root,root->val);
         return ans;
     }
 };
