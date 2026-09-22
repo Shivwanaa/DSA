@@ -1,39 +1,46 @@
 class Solution {
 public:
     int orangesRotting(vector<vector<int>>& grid) {
+        int t=0;
+        int dir[4][2]={{1,0},{0,1},{-1,0},{0,-1}};
         queue<pair<int,int>>q;
-        int count=0;
+        int fresh=0;
         for(int i=0;i<grid.size();i++){
             for(int j=0;j<grid[i].size();j++){
                 if(grid[i][j]==2){
-                q.push({i,j});
-            }
-            if(grid[i][j]==1){
-                count++;
-            }
+                    q.push({i,j});
+                }
+                if(grid[i][j]==1){
+                    fresh++;
+                }
             }
         }
-        // vector<vector<int>>dir(4,vector<int>(2));
-        int dir[4][2]={{1,0},{-1,0},{0,1},{0,-1}};
-        int ans=0;
-        while(q.size() && count){
+        if(fresh==0){
+            return 0;
+        }
+        while(q.size()){
             int s=q.size();
             for(int i=0;i<s;i++){
-                auto [r,c]=q.front();
+                auto[r,c]=q.front();
                 q.pop();
-                for(auto i:dir){
-                    if(r+i[0]<grid.size() && c+i[1]<grid[0].size() && grid[r+i[0]][c+i[1]]==1){
-                        grid[r+i[0]][c+i[1]]=2;
-                        q.push({r+i[0],c+i[1]});
-                        count--;                        
+                for(auto [i,j]:dir){
+                    int nr=i+r;
+                    int nc=j+c;
+                    if(nr>=0 && nr<grid.size() && nc>=0 && nc<grid[0].size() && grid[nr][nc]!=-1){
+                        if(grid[nr][nc]==1){
+                            fresh--;
+                        
+                        grid[nr][nc]=2;
+                        q.push({nr,nc});
+                        }
                     }
                 }
             }
-            ans++;
+            t++;
         }
-        if(count!=0){
-            return -1;
+        if(fresh==0){
+            return t-1;
         }
-        return ans;
+        return -1;
     }
 };
