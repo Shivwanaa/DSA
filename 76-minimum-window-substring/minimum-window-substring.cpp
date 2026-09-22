@@ -1,42 +1,39 @@
 class Solution {
 public:
     string minWindow(string s, string t) {
-        unordered_map<char,int>mor;
-        unordered_map<char,int>m;
+        unordered_map<char,int>origin;
         for(auto i:t){
-            mor[i]++;
+            origin[i]++;
         }
-        int closed=mor.size();
-        int j=0;
-        int idx=-1;
-        int c=0;
-        int len=1e9;
-        for(int i=0;i<s.size();i++){
-            
-            if(mor.find(s[i])!=m.end()){
-            m[s[i]]++;
-            if(m[s[i]]==mor[s[i]]){
-                c++;
+        int count=origin.size();
+        unordered_map<char,int>temp;
+        int i=0;
+        int curr=0;
+        int mi=-1,mj=-1;
+        for(int j=0;j<s.size();j++){
+            if(origin.find(s[j])!=origin.end()){
+                temp[s[j]]++;
+                if(temp[s[j]]==origin[s[j]]){
+                curr++;
             }
             }
-            while(c==closed){
-                if(len>i-j+1){
-                    len=i-j+1;
-                    idx=j;
+            while(curr==count){
+                if(mi==-1 || j-i < mj-mi){
+                    mi=i;
+                    mj=j;
                 }
-                if(m.find(s[j])!=m.end()){
-                    m[s[j]]--;
-                    if(m[s[j]]<mor[s[j]]){
-                        c--;
-                    }
+                if(temp.find(s[i])!=temp.end()){
+                    temp[s[i]]--;
+                    if(temp[s[i]]<origin[s[i]])
+                    curr--;
                 }
-                j++;
+                i++;
             }
-
         }
-        if(idx==-1){
+        if(mi==-1 || mj==-1){
             return "";
         }
-        return s.substr(idx,len);
+        // cout<<mi<< " "<<mj;
+        return s.substr(mi,mj-mi+1);
     }
 };
