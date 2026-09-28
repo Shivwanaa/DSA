@@ -12,45 +12,48 @@
 class Solution {
 public:
     int amountOfTime(TreeNode* root, int start) {
+        stack<TreeNode*>st;
+        st.push(root);
         unordered_map<TreeNode*,vector<TreeNode*>>m;
-        stack<TreeNode*>s;
-        s.push(root);
-        TreeNode*ini;
-        while(s.size()){
-            TreeNode*r=s.top();
-            s.pop();
-            if(r->val==start){
-                ini=r;
+        TreeNode*inf;
+        while(st.size()){
+            TreeNode*top=st.top();
+            st.pop();
+            if(top->val==start){
+                inf=top;
             }
-            if(r->left){
-                m[r].push_back(r->left);
-                m[r->left].push_back(r);
-                s.push(r->left);
+            if(top->left){
+                m[top].push_back(top->left);
+                m[top->left].push_back(top);
+                st.push(top->left);
             }
-            if(r->right){
-                m[r].push_back(r->right);
-                m[r->right].push_back(r);
-                s.push(r->right);
+            if(top->right){
+                m[top].push_back(top->right);
+                m[top->right].push_back(top);
+                st.push(top->right);
             }
         }
         queue<TreeNode*>q;
-        q.push(ini);
+        q.push(inf);
         int t=0;
         unordered_set<TreeNode*>v;
+        v.insert(inf);
         while(q.size()){
             int s=q.size();
             for(int i=0;i<s;i++){
-                TreeNode*fr=q.front();
-                q.pop();
-                v.insert(fr);
-                for(auto i:m[fr]){
-                    if(!v.count(i))
-                    q.push(i);
+            TreeNode*fr=q.front();
+            q.pop();
+            v.insert(fr);
+            for(auto j:m[fr]){
+                if(!v.count(j)){
+                    v.insert(j);
+                q.push(j);
                 }
             }
-            t++;
+            }
+             if(!q.empty())
+                t++;
         }
-        return t-1;
+        return t;
     }
-
 };
