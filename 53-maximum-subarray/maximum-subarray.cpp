@@ -1,15 +1,12 @@
 class Solution {
 public:
     int maxSubArray(vector<int>& nums) {
-        //subarray-no sorting shld be done
-        //kadanes algorithm-currsum<0 :reset currsum=0
-        int cs=0;
-        int ans=INT_MIN;
+        int sum=0,ans=-1e9;
         for(int i=0;i<nums.size();i++){
-            cs=cs+nums[i];
-            ans=max(ans,cs);
-            if(cs<0){
-                cs=0;
+            sum=sum+nums[i];
+            ans=max(ans,sum);
+            if(sum<0){
+                sum=0;
             }
         }
         return ans;
