@@ -9,11 +9,11 @@ public:
                 int a=j[0];
                 int b=j[1];
                 int c=j[2];
-                if(dist[a]==1e9){
-                    continue;
-                }
+                if(dist[a]!=1e9){
                 if(dist[a]+c<temp[b]){
                     temp[b]=dist[a]+c;
+                    cout<<temp[b];
+                }
                 }
             }
             dist=temp;
