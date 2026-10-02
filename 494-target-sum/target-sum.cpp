@@ -1,19 +1,19 @@
 class Solution {
 public:
-vector<vector<int>>m;
-    int check(vector<int>& nums, int target,int i,int s){
-        if(s==target && i==nums.size()){
+vector<vector<int>>dp;
+    int check(int i,vector<int>& nums, int target){
+        if(target==0 && i==nums.size()){
             return 1;
         }
-        if(i>=nums.size()){
+        if(i==nums.size()){
             return 0;
         }
-        int p1=check(nums,target,i+1,s+nums[i]);
-        int p2=check(nums,target,i+1,s-nums[i]);
-        return p1+p2;
+        int add=check(i+1,nums,target-nums[i]);
+        int sub=check(i+1,nums,target+nums[i]);
+        return add+sub;
     }
     int findTargetSumWays(vector<int>& nums, int target) {
-
-        return check(nums,target,0,0);
+        //dp=vector<vector<int>>(nums.size(),vector<int>(target*2+1));
+        return check(0,nums,target);
     }
 };
