@@ -6,18 +6,18 @@ public:
             v.insert(i);
         }
         int ans=0;
-        int l=1;
-        for(auto element:v){
-            l=1;
-            if(!v.count(element-1)){
-                int end=element;
-                while(v.count(end+1)){
+        int a=0;
+        int l=0;
+        for(auto i:v){
+            if(!v.count(i-1)){
+                a=i;
+                l=0;
+                while(v.count(a)){
                     l++;
-                    end=end+1;
+                    a++;
                 }
-                ans=max(ans,l);
             }
-
+            ans=max(ans,l);
         }
         return ans;
     }
