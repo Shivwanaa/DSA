@@ -1,31 +1,38 @@
 class RandomizedSet {
 public:
-unordered_set<int>v;
+unordered_map<int,int>m;
+vector<int>list;
+int i=0;
     RandomizedSet() {
         
     }
     
     bool insert(int val) {
-        if(v.count(val)){
+        if(m.find(val)!=m.end()){
             return false;
         }
-        v.insert(val);
+        m[val]=list.size();
+        list.push_back(val);
         return true;
     }
     
     bool remove(int val) {
-        if(!v.count(val)){
+        if(m.find(val)==m.end()){
             return false;
         }
-        v.erase(val);
+        int idx=m[val];
+        
+        int last=list.back();
+        list[idx]=last;
+        m[last]=idx;
+        list.pop_back();
+        m.erase(val);
         return true;
     }
     
     int getRandom() {
-        if(!v.empty()){
-        return *next(v.begin(),rand()%v.size());
-        }
-        return 0;
+        int x=rand()%list.size();
+        return list[x];
     }
 };
 
