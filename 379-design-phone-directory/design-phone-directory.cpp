@@ -1,38 +1,34 @@
 class PhoneDirectory {
 public:
-vector<int>slots;
-int idx=0;
-priority_queue<int,vector<int>,greater<>>q;
+unordered_set<int>av;
+
+int num;
     PhoneDirectory(int maxNumbers) {
-        slots.resize(maxNumbers,0);
+        num=maxNumbers;
         for(int i=0;i<maxNumbers;i++){
-            q.push(i);
+            av.insert(i);
         }
     }
     
     int get() {
-        if(q.empty()){
-            return -1;
+        int a=-1;
+        for(auto i:av){
+             a=i;
+            break;
         }
-        slots[q.top()]=1;
-        int ans=q.top();
-        q.pop();
-        
-        return ans;
+        av.erase(a);
+        return a;
     }
     
     bool check(int number) {
-        if(slots[number]==0){
-            return 1;
+        if(av.count(number)){
+            return true;
         }
-        return 0;
+        return false;
     }
     
     void release(int number) {
-        if(slots[number]==1){
-            slots[number]=0;
-            q.push(number);
-        }
+        av.insert(number);
     }
 };
 
