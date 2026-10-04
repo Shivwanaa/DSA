@@ -9,30 +9,26 @@ public:
         for(auto i:m){
             q.push({i.second,i.first});
         }
-        string ans="";
+        string ans;
         while(q.size()){
-            auto [freq,let]=q.top();
+            auto[freq1,ch1]=q.top();
             q.pop();
-            if(ans.size() && let==ans.back()){
-                if(!q.size()){
-                    return "";
-                }
-                auto [f1,n]=q.top();
-                q.pop();
-                ans=ans+n;
-                f1--;
-                if(f1){
-                    q.push({f1,n});
-                }
-                q.push({freq,let});
+            ans=ans+ch1;
+            if(q.empty() && freq1-1>0){
+                // cout<<ans;
+                return "";
             }
-            else{
-                ans=ans+let;
-                freq--;
-                if(freq){
-                    q.push({freq,let});
-                }
+            if(q.empty()){
+                return ans;
             }
+            auto[freq2,ch2]=q.top();
+            q.pop();
+            ans=ans+ch2;
+
+            if(freq1-1>0)
+            q.push({freq1-1,ch1});
+            if(freq2-1>0)
+            q.push({freq2-1,ch2});
         }
         return ans;
     }
