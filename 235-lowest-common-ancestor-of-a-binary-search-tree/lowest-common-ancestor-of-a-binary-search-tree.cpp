@@ -10,21 +10,24 @@
 
 class Solution {
 public:
-TreeNode*ans;
+TreeNode* ans;
     void check(TreeNode* root, TreeNode* p, TreeNode* q){
         if(!root){
-            return ;
+            return;
         }
         if((root->val>=p->val && root->val<=q->val)||(root->val<=p->val && root->val>=q->val)){
             ans=root;
+            return;
         }
-        if(p->val<root->val && q->val<root->val)
-        check(root->left,p,q);
-        if(p->val>root->val && q->val>root->val)
-        check(root->right,p,q);  
+        if(root->val<p->val && root->val<q->val){
+            check(root->right,p,q);
+        }
+        if(root->val>p->val && root->val>q->val){
+            check(root->left,p,q);
+        }
     }
-    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {     
-        check(root,p,q); 
-        return ans;        
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        check(root,p,q);
+        return ans;
     }
 };
