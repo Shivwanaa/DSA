@@ -2,13 +2,14 @@ class Solution {
 public:
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
         vector<vector<int>>ans;
-        sort(intervals.begin(),intervals.end());
-        if(intervals.size()<=1){
+        if(intervals.size()==1){
             return intervals;
         }
+        sort(intervals.begin(),intervals.end());
         vector<int>prev=intervals[0];
         vector<int>curr=intervals[1];
         int l=0;
+
         for(int r=1;r<intervals.size();r++){
             curr=intervals[r];
             if(prev[1]>=curr[0]){
