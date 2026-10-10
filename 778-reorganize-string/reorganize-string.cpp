@@ -9,13 +9,12 @@ public:
         for(auto i:m){
             q.push({i.second,i.first});
         }
-        string ans;
+        string ans="";
         while(q.size()){
             auto[freq1,ch1]=q.top();
             q.pop();
             ans=ans+ch1;
             if(q.empty() && freq1-1>0){
-                // cout<<ans;
                 return "";
             }
             if(q.empty()){
@@ -24,11 +23,12 @@ public:
             auto[freq2,ch2]=q.top();
             q.pop();
             ans=ans+ch2;
-
-            if(freq1-1>0)
-            q.push({freq1-1,ch1});
-            if(freq2-1>0)
-            q.push({freq2-1,ch2});
+            if(freq1-1>0){
+                q.push({freq1-1,ch1});
+            }
+            if(freq2-1>0){
+                q.push({freq2-1,ch2});
+            }
         }
         return ans;
     }
