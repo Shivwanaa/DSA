@@ -3,24 +3,25 @@
 
 class Solution {
 public:
+    int check(int celeb,int n){
+
+        for(int j=0;j<n;j++){
+            if(j==celeb){
+                continue;
+            }
+            if(!knows(j,celeb) || knows(celeb,j)){
+                return -1;
+            }
+        }
+        return celeb;
+    }
     int findCelebrity(int n) {
-        vector<int>in(n,0);
-        vector<int>out(n,0);
-        unordered_map<int,vector<int>>m;
+        int celeb=0;
         for(int i=0;i<n;i++){
-            for(int j=0;j<n;j++){
-                if(i!=j && knows(i,j)){
-                    in[j]++;
-                    out[i]++;
-                }
+            if(knows(celeb,i)){
+                celeb=i;
             }
         }
-        for(int i=0;i<n;i++){
-            cout<<in[i]<<" "<<out[i]<<endl;
-            if(in[i]==n-1 && out[i]==0){
-                return i;
-            }
-        }
-        return -1;
+        return check(celeb,n);
     }
 };
