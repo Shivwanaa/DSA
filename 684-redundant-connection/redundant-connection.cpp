@@ -3,7 +3,7 @@ class DSU{
     vector<int>p;
     DSU(int n){
         p.resize(n+1);
-        for(int i=1;i<=n;i++){
+        for(int i=0;i<p.size();i++){
             p[i]=i;
         }
     }
@@ -11,7 +11,7 @@ class DSU{
         if(p[node]!=node){
             return p[node]=find(p[node]);
         }
-        return p[node];
+        return node;
     }
     bool Union(int u,int v){
         int pu=find(u);
@@ -27,15 +27,12 @@ class Solution {
 public:
     vector<int> findRedundantConnection(vector<vector<int>>& edges) {
         vector<int>ans;
-
         DSU dsu(edges.size());
-        for(auto i:edges){
-            int a=dsu.find(i[0]);
-            int b=dsu.find(i[1]);
-            if(a==b){
-                return {i[0],i[1]};
+        for(int i=0;i<edges.size();i++){
+            if(dsu.find(edges[i][0])==dsu.find(edges[i][1])){
+                return {edges[i][0],edges[i][1]};
             }
-            dsu.Union(i[0],i[1]);
+            dsu.Union(edges[i][0],edges[i][1]);
         }
         return ans;
     }
