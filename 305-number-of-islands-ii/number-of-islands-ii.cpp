@@ -1,23 +1,19 @@
 class DSU{
-    
-public:
-vector<int>P;
-    vector<int>S;
-    int count;
+    public:
+    vector<int>p;
+    int c;
     DSU(int n){
-        P.resize(n+1);
-        S.resize(n+1);
-        count=0;
-        for(int i=0;i<=n;i++){
-            P[i]=i;
-            S[i]=1;
+        p.resize(n+1);
+        c=0;
+        for(int i=0;i<p.size();i++){
+            p[i]=i;
         }
     }
     int find(int node){
-        if(P[node]!=node){
-            P[node]=find(P[node]);
+        if(p[node]!=node){
+            return p[node]=find(p[node]);
         }
-        return P[node];
+        return node;
     }
     bool Union(int u,int v){
         int pu=find(u);
@@ -25,41 +21,43 @@ vector<int>P;
         if(pu==pv){
             return false;
         }
-        count--;
-        P[pv]=pu;
-        S[pu]=S[pu]+S[pv];
+        c--;
+        p[pu]=pv;
         return true;
     }
 };
-
 class Solution {
 public:
     vector<int> numIslands2(int m, int n, vector<vector<int>>& positions) {
-        auto index=[&](int r,int c){
-            return r*n+c;
-        };
         vector<int>ans;
-        unordered_set<int>l;
         DSU dsu(m*n);
+        auto index=[](int i,int j,int m,int n){
+          return i*n+j;  
+        };
         int dir[4][2]={{1,0},{0,1},{-1,0},{0,-1}};
-        for(int i=0;i<positions.size();i++){
+        vector<bool>land(m*n,false);
+        for(auto i:positions){
+            int r=i[0];
+            int c=i[1];
             
-            int pos=index(positions[i][0],positions[i][1]);
-            if(l.count(pos)){
-                ans.push_back(dsu.count);
+            int idx1=index(r,c,m,n);
+            if (land[idx1]) {
+                ans.push_back(dsu.c);
                 continue;
             }
-            dsu.count++;
-            l.insert(pos);
-            for(auto j:dir){
-                int nr=j[0]+positions[i][0];
-                int nc=j[1]+positions[i][1];
-                int npos=index(nr,nc);
-                if(nr>=0&& nr<m && nc>=0 && nc<n && l.count(npos)){
-                    dsu.Union(pos,npos);
+            land[idx1]=true;
+            dsu.c++;
+            for(auto k:dir){
+                if(r+k[0]<0||r+k[0]>=m||c+k[1]<0||c+k[1]>=n){
+                    continue;
                 }
+                int idx2=index(r+k[0],c+k[1],m,n);
+                if (land[idx2]) {
+                    dsu.Union(idx1,idx2);
+                }
+                
             }
-            ans.push_back(dsu.count);
+            ans.push_back(dsu.c);
         }
         return ans;
     }
