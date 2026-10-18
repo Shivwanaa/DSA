@@ -1,21 +1,21 @@
 class Solution {
-public:
-map<pair<int,int>,int>m;
+public: 
+vector<vector<int>>dp;
     int check(int i,int j,vector<vector<int>>& grid){
-        if(m.find({i,j})!=m.end()){
-            return m[{i,j}];
-        }
         if(i==grid.size()-1 && j==grid[0].size()-1){
             return grid[i][j];
         }
-        if(i<0||j<0||i>=grid.size()||j>=grid[0].size()){
-            return 1e9;
+        if(i>=grid.size()|| j>=grid[0].size()){return 1e9;}
+        if(dp[i][j]!=-1){
+            return dp[i][j];
         }
-        int a=check(i+1,j,grid);
-        int b=check(i,j+1,grid);
-        return m[{i,j}]= grid[i][j]+min(a,b);
+        int down=grid[i][j]+check(i+1,j,grid);
+        int right=grid[i][j]+check(i,j+1,grid);
+
+        return dp[i][j]=min(down,right);
     }
     int minPathSum(vector<vector<int>>& grid) {
+        dp=vector<vector<int>>(grid.size()+1,vector<int>(grid[0].size()+1,-1));
         return check(0,0,grid);
     }
 };
