@@ -5,18 +5,19 @@ vector<vector<int>>dp;
         if(i==m-1 && j==n-1){
             return 1;
         }
-        if(i<0||j<0||i>=m||j>=n){
+        if(i>=m || j>=n){
             return 0;
         }
         if(dp[i][j]!=-1){
             return dp[i][j];
         }
         int d=check(i+1,j,m,n);
-        int u=check(i,j+1,m,n);
-        return dp[i][j]= d+u;
+        int r=check(i,j+1,m,n);
+
+        return dp[i][j]=d+r;
     }
     int uniquePaths(int m, int n) {
-        dp=vector<vector<int>>(m,vector<int>(n,-1));
+        dp=vector<vector<int>>(m+1,vector<int>(n+1,-1));
         return check(0,0,m,n);
     }
 };
