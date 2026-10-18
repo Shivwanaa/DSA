@@ -17,7 +17,7 @@ vector<vector<int>>dp;
         return dp[i][j]=d+r;
     }
     int uniquePaths(int m, int n) {
-        dp=vector<vector<int>>(m+1,vector<int>(n+1,-1));
+        dp=vector<vector<int>>(m,vector<int>(n,-1));
         return check(0,0,m,n);
     }
 };
