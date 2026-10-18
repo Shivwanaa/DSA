@@ -1,25 +1,24 @@
 class Solution {
 public:
-vector<vector<int>>m;
-    int check(vector<vector<int>>& triangle,int i,int j){
+vector<vector<int>>dp;
+    int check(int i,int j,vector<vector<int>>& triangle){
         if(i==triangle.size()){
             return 0;
         }
-        if(i>triangle.size()||j>=triangle[i].size()){
+        if(j>=triangle[i].size()){
             return 1e9;
         }
-        if(m[i][j]!=1e9){
-            return m[i][j];
+        if(dp[i][j]!=1e9){
+            return dp[i][j];
         }
-        int a=triangle[i][j]+check(triangle,i+1,j+1);
-        int b=triangle[i][j]+check(triangle,i+1,j);
-        m[i][j]= min(a,b);
-        return m[i][j];
+        int l=0,r=0;
+        l=triangle[i][j]+check(i+1,j,triangle);
+        r=triangle[i][j]+check(i+1,j+1,triangle);
+
+        return dp[i][j]=min(l,r);
     }
     int minimumTotal(vector<vector<int>>& triangle) {
-        int n=triangle.size();
-        m=vector<vector<int>>(n+1,vector<int>(triangle[n-1].size(),1e9));
-
-        return check(triangle,0,0);
+        dp=vector<vector<int>>(triangle.size()+1,vector<int>(triangle[triangle.size()-1].size()+1,1e9));
+        return check(0,0,triangle);
     }
 };
