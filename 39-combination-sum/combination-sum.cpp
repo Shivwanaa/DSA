@@ -1,27 +1,22 @@
 class Solution {
 public:
-set<vector<int>>anst;
-    void check(int i,vector<int>& candidates, int target,vector<int>t){
-        if(target==0 && i==candidates.size()){
-            sort(t.begin(),t.end());
-            anst.insert(t);
+vector<vector<int>>ans;
+    void check(int i,vector<int>& nums, int target,vector<int>&tp){
+        if(target==0){
+            ans.push_back(tp);
             return;
         }
-        if(i==candidates.size() || target<0){
+        if(target<0||i>=nums.size()){
             return;
         }
-        t.push_back(candidates[i]);
-        check(i,candidates,target-candidates[i],t);
-        t.pop_back();
-        check(i+1,candidates,target,t);
+        tp.push_back(nums[i]);
+        check(i,nums,target-nums[i],tp);
+        tp.pop_back();
+        check(i+1,nums,target,tp);
     }
     vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
-        vector<vector<int>>ans;
-        check(0,candidates,target,{});
-        for(auto i:anst){
-            ans.push_back(i);
-        }
+        vector<int>tp;
+        check(0,candidates,target,tp);
         return ans;
-
     }
 };
