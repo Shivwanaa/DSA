@@ -1,27 +1,27 @@
 class Solution {
 public:
 vector<vector<int>>ans;
-    void check(int i,vector<int>t,vector<int>& candidates, int target){
-        if(i==candidates.size() && target==0){
-            ans.push_back(t);
+    void check(int i,vector<int>& nums, int target,vector<int>tp){
+        if(target==0 && i==nums.size()){
+            ans.push_back(tp);
             return;
         }
-        if(target<0||i>=candidates.size()){
-            return;
+        if(target<0||i>=nums.size()){
+            return ;
         }
-        t.push_back(candidates[i]);
-        check(i+1,t,candidates,target-candidates[i]);
+        tp.push_back(nums[i]);
+        check(i+1,nums,target-nums[i],tp);
         int j=i;
-        while(j+1<candidates.size() && candidates[i]==candidates[j+1]){
+        while(j+1<nums.size() && nums[j]==nums[j+1]){
             j++;
         }
-        t.pop_back();
-        check(j+1,t,candidates,target);
+        tp.pop_back();
+        check(j+1,nums,target,tp);
     }
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        vector<int>t;
         sort(candidates.begin(),candidates.end());
-        check(0,t,candidates,target);
+        vector<int>tp;
+        check(0,candidates,target,tp);
         return ans;
     }
 };
