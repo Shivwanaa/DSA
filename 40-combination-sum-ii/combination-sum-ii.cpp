@@ -11,12 +11,12 @@ vector<vector<int>>ans;
         }
         tp.push_back(nums[i]);
         check(i+1,nums,target-nums[i],tp);
-        int j=i;
-        while(j+1<nums.size() && nums[j]==nums[j+1]){
-            j++;
+        // int j=i;
+        while(i+1<nums.size() && nums[i]==nums[i+1]){
+            i++;
         }
         tp.pop_back();
-        check(j+1,nums,target,tp);
+        check(i+1,nums,target,tp);
     }
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
         sort(candidates.begin(),candidates.end());
