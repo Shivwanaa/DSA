@@ -1,7 +1,7 @@
 class Solution {
 public:
 vector<vector<int>>dp;
-    bool check(int i,int j,int k,string s1, string s2, string s3 ){
+    bool check(int i,int j,int k,string& s1, string& s2, string& s3 ){
         if(k==s3.size()){
             return true;
         }
