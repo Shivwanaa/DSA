@@ -1,6 +1,5 @@
 class Solution {
 public:
-
     int check(int i,vector<int>& nums, int target){
         if(target==0 && i==nums.size()){
             return 1;
