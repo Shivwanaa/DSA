@@ -10,9 +10,9 @@ public:
         for(int j=0;j<s2.size();j++){
             m2[s2[j]]++;
             if(j-i+1==s1.size()){
-                if(m1==m2)
-                return true;
-
+                if(m1==m2){
+                    return true;
+                }
                 m2[s2[i]]--;
                 if(m2[s2[i]]==0){
                     m2.erase(s2[i]);
