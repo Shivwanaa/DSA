@@ -1,19 +1,17 @@
 class DSU{
     public:
     vector<int>p;
-    vector<int>s;
+    int n;
     DSU(int n){
         p.resize(n+1);
-        s.resize(n+1);
-        for(int i=0;i<n+1;i++){
+        for(int i=0;i<p.size();i++){
             p[i]=i;
-            s[i]=1;
         }
     }
 
     int find(int node){
         if(p[node]!=node){
-           p[node] = find(p[node]); 
+            return p[node]=find(p[node]);
         }
         return p[node];
     }
@@ -24,30 +22,30 @@ class DSU{
             return false;
         }
         p[pu]=pv;
-        s[pv]=s[pv]+s[pu];
         return true;
     }
 };
 class Solution {
 public:
     int minCostConnectPoints(vector<vector<int>>& points) {
-        vector<tuple<int,int,int>>v;
+        vector<tuple<int,int,int>>arr;
         for(int i=0;i<points.size();i++){
             for(int j=i+1;j<points.size();j++){
                 int d=abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1]);
-                v.push_back({d,i,j});
+                arr.push_back({d,i,j});
             }
         }
-        sort(v.begin(),v.end());
-        DSU dsu(points.size());
+        sort(arr.begin(),arr.end());
         int ans=0;
-        for(auto [i,n1,n2]:v){
-            if(dsu.find(n1)==dsu.find(n2)){
+        DSU dsu(points.size());
+        for(auto [d,i,j]:arr){
+            if(dsu.find(i)==dsu.find(j)){
                 continue;
             }
-            dsu.Union(n1,n2);
-            ans=ans+i;
+            dsu.Union(i,j);
+            ans=ans+d;
         }
         return ans;
+
     }
 };
