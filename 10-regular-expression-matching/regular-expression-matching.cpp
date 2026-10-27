@@ -1,7 +1,7 @@
 class Solution {
 public:
 vector<vector<int>>dp;
-    bool check(string &s, string &p,int i,int j){
+    bool check(int i,int j,string s, string p){
         if(i==s.size() && j==p.size()){
             return true;
         }
@@ -11,18 +11,21 @@ vector<vector<int>>dp;
         if(dp[i][j]!=-1){
             return dp[i][j];
         }
-        bool a=((s[i]==p[j] || p[j]=='.')? true:false);
+        bool match=( i<s.size()&&(s[i]==p[j])||p[j]=='.');
+        
         if(j+1<p.size() && p[j+1]=='*'){
-            return dp[i][j]= check(s,p,i,j+2)||(a && check(s,p,i+1,j));
+            return dp[i][j]=match && check(i+1,j,s,p)||check(i,j+2,s,p);
         }
         else{
-            if(a)
-            return dp[i][j]= check(s,p,i+1,j+1);
+            if(match){
+                return dp[i][j]=check(i+1,j+1,s,p);
+            }
         }
-        return false;
+        return dp[i][j]=false;
+
     }
     bool isMatch(string s, string p) {
         dp=vector<vector<int>>(s.size()+1,vector<int>(p.size()+1,-1));
-        return check(s,p,0,0);
+        return check(0,0,s,p);
     }
 };
