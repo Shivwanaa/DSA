@@ -11,34 +11,31 @@
  */
 class Solution {
 public:
-    bool check2(TreeNode* root, TreeNode* subRoot){
-        if(root && !subRoot){
-            return false;
-        }
-        if(!root && subRoot){
-            return false;
-        }
-        if(!root && !subRoot){
-            return true;
-        }
-        if(root->val!=subRoot->val ){
-            return false;
-        }
-        return check2(root->left,subRoot->left) && check2(root->right,subRoot->right);
-    }
+bool ans;
     bool check1(TreeNode* root, TreeNode* subRoot){
-        if(!root && !subRoot){
-            return false;
-        }
-        if(!root){
-            return false;
-        }
-        if(root->val==subRoot->val && check2(root,subRoot)){
+        if(!subRoot && !root){
             return true;
         }
-        return check1(root->left,subRoot)||check1(root->right,subRoot);
+        if(!subRoot||!root){
+            return false;
+        }
+        if(subRoot->val!=root->val){
+            return false;
+        }
+        return check1(root->left,subRoot->left)&&check1(root->right,subRoot->right);
+    }
+    void check(TreeNode* root, TreeNode* subRoot){
+        if(!root){
+            return;
+        }
+        if(subRoot->val==root->val){
+            ans=ans||check1(root,subRoot);
+        }
+        check(root->left,subRoot);
+        check(root->right,subRoot);
     }
     bool isSubtree(TreeNode* root, TreeNode* subRoot) {
-        return check1(root,subRoot);
+        check(root,subRoot);
+        return ans;
     }
 };
