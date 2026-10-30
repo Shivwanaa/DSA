@@ -11,14 +11,18 @@
  */
 class Solution {
 public:
-    TreeNode* invertTree(TreeNode* root) {
+    TreeNode* check(TreeNode*root){
         if(!root){
             return nullptr;
         }
-        TreeNode*l=invertTree(root->right);
-        TreeNode*r=invertTree(root->left);
+        TreeNode*r=check(root->left);
+        TreeNode*l=check(root->right);
         root->left=l;
         root->right=r;
+        return root;
+    }
+    TreeNode* invertTree(TreeNode* root) {
+        check(root);
         return root;
     }
 };
