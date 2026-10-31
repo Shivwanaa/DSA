@@ -1,49 +1,38 @@
 class Solution {
 public:
-    bool check(int i,int a,int b,int c,int d,int s,vector<int>& matchsticks){
-        if(i==matchsticks.size() && a==s && b==s && c==s && d==s){
+
+    bool check(int i,vector<int>& matchsticks,int a,int b,int c,int d){
+        if(a==0 && b==0 && c==0 && d==0){
             return true;
         }
-        if(i==matchsticks.size()){
+        if(i>=matchsticks.size()||a<0||b<0||c<0||d<0){
             return false;
         }
-        bool ans=false;
-        if(a+matchsticks[i]<=s){
-        ans=ans||check(i+1,a+matchsticks[i],b,c,d,s,matchsticks);
-        if(ans){
+        if(matchsticks[i]<=a && check(i+1,matchsticks,a-matchsticks[i],b,c,d)){
             return true;
         }
-        }
-        if(b+matchsticks[i]<=s){
-        ans=ans||check(i+1,a,b+matchsticks[i],c,d,s,matchsticks);
-        if(ans){
+        if(matchsticks[i]<=b && b!=a && check(i+1,matchsticks,a,b-matchsticks[i],c,d)){
             return true;
         }
-        }
-        if(c+matchsticks[i]<=s){
-        ans=ans||check(i+1,a,b,c+matchsticks[i],d,s,matchsticks);
-        if(ans){
+        if(matchsticks[i]<=c && c!=a && c!=b && check(i+1,matchsticks,a,b,c-matchsticks[i],d)){
             return true;
         }
-        }
-        if(d+matchsticks[i]<=s){
-        ans=ans||check(i+1,a,b,c,d+matchsticks[i],s,matchsticks);
-        if(ans){
+        if(matchsticks[i]<=d && d!=a && d!=b&& d!=c && check(i+1,matchsticks,a,b,c,d-matchsticks[i])){
             return true;
-        }
         }
 
-        return ans;
+        return false;
     }
     bool makesquare(vector<int>& matchsticks) {
-        int s=0;
-        sort(matchsticks.rbegin(), matchsticks.rend());
+        int sum=0;
         for(int i=0;i<matchsticks.size();i++){
-            s=s+matchsticks[i];
+            sum=sum+matchsticks[i];
         }
-        if(s%4!=0){
+        if(sum%4!=0){
             return false;
         }
-        return check(0,0,0,0,0,s/4,matchsticks);
+        sort(matchsticks.rbegin(),matchsticks.rend());
+        int side=sum/4;
+        return check(0,matchsticks,side,side,side,side);
     }
 };
