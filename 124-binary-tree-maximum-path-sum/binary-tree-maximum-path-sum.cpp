@@ -11,14 +11,14 @@
  */
 class Solution {
 public:
-int ans=INT_MIN;
-    int check(TreeNode* root){
+int ans=-1e9;
+    int check(TreeNode*root){
         if(!root){
             return 0;
         }
         int l=max(0,check(root->left));
         int r=max(0,check(root->right));
-        ans=max(ans,root->val+l+r);
+        ans=max(ans,l+r+root->val);
         return root->val+max(l,r);
     }
     int maxPathSum(TreeNode* root) {
