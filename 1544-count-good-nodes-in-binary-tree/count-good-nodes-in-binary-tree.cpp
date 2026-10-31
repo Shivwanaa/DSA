@@ -12,20 +12,20 @@
 class Solution {
 public:
 int ans=0;
-    void check(TreeNode* root,int maxi){
+    void check(TreeNode* root,int value){
         if(!root){
             return;
         }
-        int a;
-        if(maxi<=root->val){
-            maxi=root->val;
+        if(value<=root->val){
             ans++;
         }
-        check(root->left,maxi);
-        check(root->right,maxi);
+        check(root->left,max(value,root->val));
+        check(root->right,max(value,root->val));
     }
     int goodNodes(TreeNode* root) {
-        //max from each dfs path
+        if(!root){
+            return 0;
+        }
         check(root,root->val);
         return ans;
     }
