@@ -1,32 +1,32 @@
 class Solution {
 public:
-vector<vector<int>>m;
-    int check(vector<vector<char>>& matrix,int i,int j){
-        if(i>=matrix.size() ||j>=matrix[0].size()){
+vector<vector<int>>dp;
+    int check(int i,int j,vector<vector<char>>& matrix){
+        if(i>=matrix.size()||j>=matrix[0].size()){
             return 0;
         }
-        if(m[i][j]!=-1){
-            return m[i][j];
+        if(matrix[i][j]=='0'){
+            return 0;
         }
-        int a=check(matrix,i+1,j);
-        int b=check(matrix,i+1,j+1);
-        int c=check(matrix,i,j+1);
-        m[i][j]=0;
-        if(matrix[i][j]=='1'){
-        m[i][j]= 1+min({a,b,c});
+        if(dp[i][j]!=-1){
+            return dp[i][j];
         }
-        matrix[i][j]='0';
-        return m[i][j];
+        int a=check(i+1,j,matrix);
+        int b=check(i,j+1,matrix);
+        int c=check(i+1,j+1,matrix);
+        return dp[i][j]=1+min({a,b,c});
     }
     int maximalSquare(vector<vector<char>>& matrix) {
-        int ans=0;
-        m=vector<vector<int>>(matrix.size(),vector<int>(matrix[0].size(),-1));
-        check(matrix,0,0);
+        int side=0;
+        dp=vector<vector<int>>(matrix.size()+1,vector<int>(matrix[0].size()+1,-1));
+
         for(int i=0;i<matrix.size();i++){
             for(int j=0;j<matrix[0].size();j++){
-                    ans=max(ans,m[i][j]);
+                if(matrix[i][j]=='1'){
+                    side=max(side,check(i,j,matrix));
+                }
             }
         }
-        return ans*ans;
+        return side*side;
     }
 };
