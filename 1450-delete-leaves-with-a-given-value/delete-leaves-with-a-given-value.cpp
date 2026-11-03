@@ -11,19 +11,21 @@
  */
 class Solution {
 public:
-    TreeNode* check(TreeNode* root, int target){
+    TreeNode*check(TreeNode* root, int target){
         if(!root){
             return nullptr;
         }
-        root->left=check(root->left,target);
-        root->right=check(root->right,target);
-        if(root->left==nullptr && root->right==nullptr && root->val==target){
+        TreeNode*l=check(root->left,target);
+        TreeNode*r=check(root->right,target);
+        root->left=l;
+        root->right=r;
+        if(root->val==target && !l && !r){
             return nullptr;
         }
         return root;
     }
     TreeNode* removeLeafNodes(TreeNode* root, int target) {
         return check(root,target);
-        
+        // return root;
     }
 };
