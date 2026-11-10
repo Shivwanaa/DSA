@@ -2,13 +2,12 @@ class Solution {
 public:
 vector<string>ans;
     void check(int i,string digits,unordered_map<int,string>&m,string tp){
-        if(i==digits.size()){
+        if(tp.size()==digits.size()){
             ans.push_back(tp);
             return;
         }
-        int digit=digits[i]-'0';
-        for(auto ch:m[digit]){
-            check(i+1,digits,m,tp+ch);
+        for(auto j:m[digits[i]-'0']){
+            check(i+1,digits,m,tp+j);
         }
     }
     vector<string> letterCombinations(string digits) {
