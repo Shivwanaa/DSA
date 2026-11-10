@@ -9,10 +9,10 @@ vector<int>dp;
             return dp[i];
         }
         int ans=1e9;
-        for(int j=0;j<nums[i];j++){
-            ans=min(ans,1+check(i+j+1,nums));
+        for(int j=1;j<=nums[i];j++){
+            ans=min(ans,1+check(i+j,nums));
         }
-        return dp[i]=ans;
+        return  dp[i]=ans;
     }
     int jump(vector<int>& nums) {
         dp=vector<int>(nums.size()+1,-1);
