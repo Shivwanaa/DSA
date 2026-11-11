@@ -1,28 +1,25 @@
 class Solution {
 public:
-vector<vector<int>>dp;
-    int check(int num,int n){
-        if(num<=0){
-            return 1e9;
-        }
-        if(n<0){
-            return 1e9;
-        }
+vector<int>dp;
+    int check(int n){
         if(n==0){
             return 0;
         }
-        if(dp[n][num]!=-1){
-            return dp[n][num];
+
+        if(n<0){
+            return 1e9;
         }
-        int a=1e9,b=1e9;
-        if(num*num<=n)
-        a=1+check(num,n-num*num);
-        b=check(num-1,n);
-        return dp[n][num]=min({a,b});
+        if(dp[n]!=-1){
+            return dp[n];
+        }
+        int ans=1e9;
+        for(int i=1;i*i<=n;i++){
+            ans=min(ans,1+check(n-i*i));
+        }
+        return dp[n]=ans;
     }
     int numSquares(int n) {
-        int num = sqrt(n);
-        dp=vector<vector<int>>(n+1,vector<int>(num+1,-1));
-        return check(num,n);
+        dp=vector<int>(n+1,-1);
+        return check(n);
     }
 };
