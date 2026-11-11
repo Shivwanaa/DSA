@@ -14,7 +14,7 @@ vector<int>dp;
         return dp[n]=check(n-1)+check(n-2)+check(n-3);
     }
     int tribonacci(int n) {
-        dp.resize(n + 1, -1);
+        dp=vector<int>(n+1,-1);
         return check(n);
     }
 };
