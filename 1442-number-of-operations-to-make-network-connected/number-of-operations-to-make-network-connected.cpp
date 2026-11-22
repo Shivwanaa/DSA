@@ -1,43 +1,31 @@
-class DSU{
-    public:
-    vector<int>p;
-    int n;
-    int tot;
-    DSU(int n){
-        p.resize(n+1);
-        for(int i=0;i<=n;i++){
-            p[i]=i;
-        }
-        tot=n;
-    }
-    int find(int node){
-        if(p[node]!=node){
-            return find(p[node]);
-        }
-        return p[node];
-    }
-    bool Union(int u,int v){
-        int pu=find(u);
-        int pv=find(v);
-        if(pu==pv){
-            return false;
-        }
-        p[pu]=pv;
-        tot--;
-        return true;
-    }
-};
 class Solution {
 public:
+    void dfs(unordered_map<int,vector<int>>&m,int node,vector<int>&v){
+        v[node]=1;
+        for(auto i:m[node]){
+            if(v[i]==0){
+                v[i]=1;
+            dfs(m,i,v);
+            }
+        }
+    }
     int makeConnected(int n, vector<vector<int>>& connections) {
-        if(connections.size()<n-1){
+        vector<int>v(n,0);
+        int ans=0;
+        if(n-1>connections.size()){
             return -1;
         }
-        DSU dsu(n);
+        unordered_map<int,vector<int>>m;
         for(auto i:connections){
-            if(dsu.find(i[0])!=dsu.find(i[1]))
-            dsu.Union(i[0],i[1]);
+            m[i[0]].push_back(i[1]);
+            m[i[1]].push_back(i[0]);
         }
-        return dsu.tot-1;
+        for(int i=0;i<n;i++){
+            if(v[i]==0){
+            dfs(m,i,v);
+            ans++;
+            }
+        }
+        return ans-1;
     }
 };
